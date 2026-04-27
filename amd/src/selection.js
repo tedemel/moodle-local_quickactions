@@ -59,7 +59,8 @@ const enableSelection = () => {
     // Lasso only on pointer-fine devices — no touch-drag confusion on mobile.
     const isTouch = window.matchMedia('(pointer: coarse)').matches;
     if (!isTouch && (state.mode === 'lasso' || state.mode === 'both')) {
-        document.addEventListener('mousedown', onLassoStart);
+        // Capture phase so we run before Moodle's per-activity drag handler.
+        document.addEventListener('mousedown', onLassoStart, true);
     }
     document.body.classList.add('local-quickactions-selecting');
 };
@@ -67,7 +68,7 @@ const enableSelection = () => {
 const disableSelection = () => {
     document.querySelectorAll('.local-quickactions-checkbox, .local-quickactions-section-checkbox')
         .forEach((cb) => cb.remove());
-    document.removeEventListener('mousedown', onLassoStart);
+    document.removeEventListener('mousedown', onLassoStart, true);
     state.selectedCms.clear();
     state.selectedSections.clear();
     updateSubtitle();
@@ -220,6 +221,7 @@ const onLassoStart = (e) => {
     document.addEventListener('mousemove', onLassoMove);
     document.addEventListener('mouseup', onLassoEnd);
     e.preventDefault();
+    e.stopPropagation();
 };
 
 const onLassoMove = (e) => {
