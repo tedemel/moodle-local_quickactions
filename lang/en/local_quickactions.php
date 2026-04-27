@@ -83,6 +83,11 @@ $string['action_completion_template_desc'] = 'Pick one selected activity as the 
 $string['action_completion_template_pick'] = 'Pick template';
 $string['error_completion_needs_two'] = 'Select at least two activities (one template + targets).';
 
+$string['reason_move_already_there'] = 'All selected activities are already in the target section.';
+$string['reason_dateshift_no_dates'] = 'None of the selected activities have shiftable date fields.';
+$string['reason_completion_template_none'] = 'The template has no completion settings — applying it would clear all targets.';
+$string['reason_completion_template_match'] = 'All target activities already match the template completion settings.';
+
 $string['dialog_preview'] = 'Preview';
 $string['dialog_preview_intro'] = 'The following changes will be applied:';
 $string['dialog_apply'] = 'Apply';

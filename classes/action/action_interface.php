@@ -57,7 +57,10 @@ interface action_interface {
     public static function validate(array $params, array $cmids, int $courseid, \context_course $context): void;
 
     /**
-     * preview.
+     * Build a preview of what the action would do.
+     *
+     * Returns a flat list of rows OR an array with keys
+     * 'rows', 'applicable' (bool), 'reason' (string).
      */
     public static function preview(array $params, array $cmids, int $courseid, \context_course $context): array;
 

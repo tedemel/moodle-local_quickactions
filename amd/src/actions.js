@@ -216,11 +216,14 @@ const runPreview = async() => {
             },
         }])[0];
 
+        const applicable = result.applicable !== false && result.rows.length > 0;
         const {html, js} = await Templates.renderForPromise('local_quickactions/preview_table', {
             intro: await getString('dialog_preview_intro', 'local_quickactions'),
             rows: result.rows,
             applyStr: await getString('dialog_apply', 'local_quickactions'),
             cancelStr: await getString('dialog_cancel', 'local_quickactions'),
+            applicable: applicable,
+            reason: applicable ? '' : (result.reason || ''),
         });
 
         const dialog = document.querySelector(SELECTORS.dialog);

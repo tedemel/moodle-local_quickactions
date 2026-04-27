@@ -83,6 +83,11 @@ $string['action_completion_template_desc'] = 'Eine markierte Aktivität als Vorl
 $string['action_completion_template_pick'] = 'Vorlage wählen';
 $string['error_completion_needs_two'] = 'Mindestens zwei Aktivitäten markieren (eine Vorlage + Ziele).';
 
+$string['reason_move_already_there'] = 'Alle ausgewählten Aktivitäten sind bereits in der Ziel-Sektion.';
+$string['reason_dateshift_no_dates'] = 'Keine der ausgewählten Aktivitäten hat verschiebbare Termine.';
+$string['reason_completion_template_none'] = 'Die Vorlage hat keine Abschluss-Bedingungen — Kopieren würde alle Ziele leer setzen.';
+$string['reason_completion_template_match'] = 'Alle Zielaktivitäten haben bereits dieselben Abschluss-Bedingungen wie die Vorlage.';
+
 $string['dialog_preview'] = 'Vorschau';
 $string['dialog_preview_intro'] = 'Folgende Änderungen werden angewendet:';
 $string['dialog_apply'] = 'Anwenden';

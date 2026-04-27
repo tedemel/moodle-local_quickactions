@@ -116,7 +116,11 @@ class dateshift implements action_interface {
                 ];
             }
         }
-        return $rows;
+        return [
+            'rows' => $rows,
+            'applicable' => !empty($rows),
+            'reason' => !empty($rows) ? '' : get_string('reason_dateshift_no_dates', 'local_quickactions'),
+        ];
     }
 
     /**

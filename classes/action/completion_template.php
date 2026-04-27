@@ -113,7 +113,17 @@ class completion_template implements action_interface {
         $tplrec = $DB->get_record('course_modules', ['id' => $templatecmid], 'id, ' . implode(', ', self::COMPLETION_FIELDS));
         $tplsummary = self::summarise($tplrec);
 
+        // If the template itself has completion=none, copying it would clear everyone — flag as not applicable.
+        if ((int)$tplrec->completion === 0) {
+            return [
+                'rows' => [],
+                'applicable' => false,
+                'reason' => get_string('reason_completion_template_none', 'local_quickactions'),
+            ];
+        }
+
         $rows = [];
+        $changed = 0;
         foreach ($cmids as $cmid) {
             if ((int)$cmid === $templatecmid) {
                 continue;
@@ -123,14 +133,22 @@ class completion_template implements action_interface {
                 continue;
             }
             $rec = $DB->get_record('course_modules', ['id' => $cmid], 'id, ' . implode(', ', self::COMPLETION_FIELDS));
+            $beforesum = self::summarise($rec);
+            if ($beforesum !== $tplsummary) {
+                $changed++;
+            }
             $rows[] = [
                 'cmid'   => (int)$cmid,
                 'label'  => format_string($cm->name) . ' (' . $cm->modname . ')',
-                'before' => self::summarise($rec),
+                'before' => $beforesum,
                 'after'  => $tplsummary,
             ];
         }
-        return $rows;
+        return [
+            'rows' => $rows,
+            'applicable' => $changed > 0,
+            'reason' => $changed > 0 ? '' : get_string('reason_completion_template_match', 'local_quickactions'),
+        ];
     }
 
     /**

@@ -95,12 +95,17 @@ class move implements action_interface {
 
         $modinfo = get_fast_modinfo($courseid);
         $rows = [];
+        $changed = 0;
         foreach ($cmids as $cmid) {
             $cm = $modinfo->cms[$cmid] ?? null;
             if (!$cm) {
                 continue;
             }
             $currentsection = $modinfo->get_section_info($cm->sectionnum);
+            $alreadythere = $currentsection && (int)$currentsection->id === $targetsectionid;
+            if (!$alreadythere) {
+                $changed++;
+            }
             $rows[] = [
                 'cmid' => $cmid,
                 'label' => format_string($cm->name),
@@ -110,7 +115,11 @@ class move implements action_interface {
                 'after' => format_string($targetname),
             ];
         }
-        return $rows;
+        return [
+            'rows' => $rows,
+            'applicable' => $changed > 0,
+            'reason' => $changed > 0 ? '' : get_string('reason_move_already_there', 'local_quickactions'),
+        ];
     }
 
     /**

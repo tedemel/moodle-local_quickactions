@@ -77,9 +77,25 @@ class preview extends external_api {
             ? array_map('intval', (array)$actionparams['sectionids']) : [];
 
         $cls::validate($actionparams, $cmidsint, $courseid, $context);
-        $rows = $cls::preview($actionparams, $cmidsint, $courseid, $context);
+        $result = $cls::preview($actionparams, $cmidsint, $courseid, $context);
 
-        return ['rows' => $rows];
+        // Backwards-compat: action::preview() may return either a flat row list
+        // or an associative array with 'rows', 'applicable', 'reason'.
+        if (isset($result['rows']) && is_array($result['rows'])) {
+            $rows       = $result['rows'];
+            $applicable = (bool)($result['applicable'] ?? true);
+            $reason     = (string)($result['reason'] ?? '');
+        } else {
+            $rows       = $result;
+            $applicable = !empty($rows);
+            $reason     = '';
+        }
+
+        return [
+            'rows'       => $rows,
+            'applicable' => $applicable,
+            'reason'     => $reason,
+        ];
     }
 
     /**
@@ -87,6 +103,8 @@ class preview extends external_api {
      */
     public static function execute_returns(): external_single_structure {
         return new external_single_structure([
+            'applicable' => new external_value(PARAM_BOOL, 'Whether the action would do anything'),
+            'reason' => new external_value(PARAM_TEXT, 'Reason when applicable=false'),
             'rows' => new external_multiple_structure(
                 new external_single_structure([
                     'cmid' => new external_value(PARAM_INT, 'Course module id (0 if not applicable)'),
