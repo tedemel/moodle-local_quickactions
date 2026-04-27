@@ -1,0 +1,58 @@
+{
+  "name": "tour_name,local_quickactions",
+  "description": "tour_desc,local_quickactions",
+  "pathmatch": "/local/quickactions/manual_trigger_only",
+  "enabled": "1",
+  "sortorder": "10",
+  "endtourlabel": "",
+  "configdata": "{\"placement\":\"top\",\"orphan\":\"0\",\"backdrop\":\"1\",\"reflex\":\"0\",\"filtervalues\":{\"accessdate\":{\"filter_accessdate\":\"tool_usertours_accountcreation\",\"filter_accessdate_range\":0,\"filter_accessdate_enabled\":\"0\"},\"category\":[],\"course\":[],\"courseformat\":[],\"role\":[\"-1\",\"manager\",\"editingteacher\",\"coursecreator\"],\"theme\":[],\"cssselector\":[]},\"shipped_tour\":false,\"shipped_filename\":\"\",\"shipped_version\":1}",
+  "displaystepnumbers": true,
+  "version": "2026050100",
+  "steps": [
+    {
+      "title": "tour_step1_title,local_quickactions",
+      "content": "tour_step1_content,local_quickactions",
+      "contentformat": "1",
+      "targettype": "0",
+      "targetvalue": "[data-region=\"qa-fab\"]",
+      "sortorder": "0",
+      "configdata": "{\"placement\":\"top\"}"
+    },
+    {
+      "title": "tour_step2_title,local_quickactions",
+      "content": "tour_step2_content,local_quickactions",
+      "contentformat": "1",
+      "targettype": "2",
+      "targetvalue": "",
+      "sortorder": "1",
+      "configdata": "{}"
+    },
+    {
+      "title": "tour_step3_title,local_quickactions",
+      "content": "tour_step3_content,local_quickactions",
+      "contentformat": "1",
+      "targettype": "0",
+      "targetvalue": "[data-for=\"cmitem\"]:first-of-type .activity-item",
+      "sortorder": "2",
+      "configdata": "{\"placement\":\"bottom\"}"
+    },
+    {
+      "title": "tour_step4_title,local_quickactions",
+      "content": "tour_step4_content,local_quickactions",
+      "contentformat": "1",
+      "targettype": "0",
+      "targetvalue": "[data-for=\"section_title\"]",
+      "sortorder": "3",
+      "configdata": "{\"placement\":\"bottom\"}"
+    },
+    {
+      "title": "tour_step5_title,local_quickactions",
+      "content": "tour_step5_content,local_quickactions",
+      "contentformat": "1",
+      "targettype": "2",
+      "targetvalue": "",
+      "sortorder": "4",
+      "configdata": "{}"
+    }
+  ]
+}

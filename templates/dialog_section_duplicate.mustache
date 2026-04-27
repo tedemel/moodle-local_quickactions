@@ -1,0 +1,31 @@
+{{!
+    @template local_quickactions/dialog_section_duplicate
+    Context:
+    * sections - [{id, name}]
+}}
+<div class="local-quickactions-dialog">
+    <h4 class="h6">{{#str}}action_section_duplicate, local_quickactions{{/str}}</h4>
+    <p class="text-muted">{{#str}}action_section_duplicate_desc, local_quickactions{{/str}}</p>
+
+    <div class="mb-3">
+        <label for="qa-secdup-section" class="form-label">{{#str}}section{{/str}}</label>
+        <select id="qa-secdup-section" class="form-select">
+            {{#sections}}
+                <option value="{{id}}">{{name}}</option>
+            {{/sections}}
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="qa-secdup-position" class="form-label">{{#str}}action_section_duplicate_position, local_quickactions{{/str}}</label>
+        <select id="qa-secdup-position" class="form-select">
+            <option value="after">{{#str}}action_section_duplicate_after, local_quickactions{{/str}}</option>
+            <option value="end">{{#str}}action_section_duplicate_end, local_quickactions{{/str}}</option>
+        </select>
+    </div>
+
+    <div class="d-flex gap-2">
+        <button type="button" class="btn btn-secondary" data-action="qa-back">{{#str}}back{{/str}}</button>
+        <button type="button" class="btn btn-primary" data-action="qa-preview">{{#str}}dialog_preview, local_quickactions{{/str}}</button>
+    </div>
+</div>

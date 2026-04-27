@@ -1,0 +1,5 @@
+.DS_Store
+__MACOSX/
+*.swp
+node_modules/
+amd/build/*.min.js.map

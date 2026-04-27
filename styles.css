@@ -1,0 +1,272 @@
+/* Floating Action Button + Bottom-Sheet Panel */
+
+.local-quickactions-root {
+    --qa-z-fab: 1040;
+    --qa-z-panel: 1050;
+    --qa-z-overlay: 1060;
+}
+
+.local-quickactions-root.qa-pos-bottom-right .local-quickactions-fab {
+    right: 1.5rem;
+    bottom: 1.5rem;
+}
+.local-quickactions-root.qa-pos-bottom-left .local-quickactions-fab {
+    left: 1.5rem;
+    bottom: 1.5rem;
+}
+.local-quickactions-root.qa-pos-bottom-center .local-quickactions-fab {
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 1.5rem;
+}
+
+.local-quickactions-fab {
+    position: fixed;
+    z-index: var(--qa-z-fab);
+    background: var(--bs-primary, #007bff);
+    color: var(--bs-white, #fff);
+    border: none;
+    border-radius: 2rem;
+    padding: 0.75rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    font-weight: 500;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.local-quickactions-fab:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+.local-quickactions-fab:focus {
+    outline: 2px solid var(--bs-warning, #ffc107);
+    outline-offset: 2px;
+}
+
+.local-quickactions-panel {
+    position: fixed;
+    bottom: 5rem;
+    right: 1.5rem;
+    z-index: var(--qa-z-panel);
+    background: var(--bs-body-bg, #fff);
+    color: var(--bs-body-color, #212529);
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+    width: 480px;
+    max-width: calc(100vw - 3rem);
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+.local-quickactions-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.local-quickactions-panel-title {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.local-quickactions-panel-subtitle {
+    color: var(--bs-secondary-color, #6c757d);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    flex: 1;
+}
+
+.local-quickactions-close-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+}
+
+.local-quickactions-panel-toolbar {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--bs-border-color, #dee2e6);
+    margin-bottom: 0.75rem;
+}
+
+.local-quickactions-lasso-hint {
+    font-size: 0.75rem;
+    color: var(--bs-secondary-color, #6c757d);
+    margin-left: auto;
+}
+
+.local-quickactions-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+}
+
+.local-quickactions-action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 0.75rem;
+    background: var(--bs-secondary-bg, #f8f9fa);
+    border: 1px solid var(--bs-border-color, #dee2e6);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.15s;
+    text-align: center;
+}
+
+.local-quickactions-action-btn:hover {
+    background: var(--bs-tertiary-bg, #e9ecef);
+    transform: translateY(-1px);
+}
+
+.local-quickactions-action-btn .fa {
+    font-size: 1.5rem;
+    color: var(--bs-primary, #007bff);
+}
+
+.local-quickactions-action-name {
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.local-quickactions-action-dialog {
+    padding: 0.5rem 0;
+}
+
+.local-quickactions-selected {
+    outline: 2px solid var(--bs-primary, #007bff) !important;
+    outline-offset: 2px;
+    background: rgba(0, 123, 255, 0.08);
+}
+
+.local-quickactions-checkbox {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 0.5rem;
+    cursor: pointer;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+.local-quickactions-checkbox input {
+    cursor: pointer;
+    width: 1.1rem;
+    height: 1.1rem;
+    margin: 0;
+    display: block;
+}
+
+/* On touch devices give checkboxes bigger hit targets and hide lasso hint. */
+@media (pointer: coarse) {
+    .local-quickactions-checkbox input,
+    .local-quickactions-section-checkbox input {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+    .local-quickactions-lasso-hint {
+        display: none;
+    }
+}
+
+body.local-quickactions-selecting [data-for="cmitem"],
+body.local-quickactions-selecting [data-for="section"] {
+    position: relative;
+}
+
+.local-quickactions-section-checkbox {
+    position: absolute;
+    left: 0.25rem;
+    top: -0.75rem;
+    z-index: 6;
+    background: var(--bs-body-bg, #fff);
+    border-radius: 0.25rem;
+    padding: 2px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.local-quickactions-section-checkbox input {
+    cursor: pointer;
+    width: 1.1rem;
+    height: 1.1rem;
+    margin: 0;
+    display: block;
+}
+
+body.local-quickactions-selecting .activity {
+    cursor: pointer;
+}
+
+.local-quickactions-lasso-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: var(--qa-z-overlay);
+    pointer-events: none;
+}
+
+.local-quickactions-lasso-rect {
+    position: fixed;
+    border: 2px dashed var(--bs-primary, #007bff);
+    background: rgba(0, 123, 255, 0.1);
+    pointer-events: none;
+}
+
+.local-quickactions-preview-table {
+    margin: 0.5rem 0;
+}
+
+.local-quickactions-preview-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+.local-quickactions-undo-toast {
+    position: fixed;
+    bottom: 5.5rem;
+    left: 1.5rem;
+    z-index: 1080;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    max-width: 480px;
+}
+
+@media (max-width: 600px) {
+    .local-quickactions-panel {
+        width: calc(100vw - 1rem);
+        right: 0.5rem;
+        left: 0.5rem;
+        bottom: 5rem;
+        max-height: 70vh;
+    }
+    .local-quickactions-actions-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    .local-quickactions-fab {
+        padding: 0.6rem 1rem;
+        font-size: 0.875rem;
+    }
+    .local-quickactions-fab .fa {
+        font-size: 1rem;
+    }
+    .local-quickactions-undo-toast {
+        left: 0.5rem;
+        right: 0.5rem;
+        max-width: none;
+    }
+}

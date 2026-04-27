@@ -1,0 +1,25 @@
+{{!
+    @template local_quickactions/dialog_visibility
+}}
+<div class="local-quickactions-dialog">
+    <h4 class="h6">{{#str}}action_visibility, local_quickactions{{/str}}</h4>
+    <p class="text-muted">{{#str}}action_visibility_desc, local_quickactions{{/str}}</p>
+    <div class="local-quickactions-radio-group">
+        <label class="d-block mb-2">
+            <input type="radio" name="qa-visibility-mode" value="show" checked>
+            {{#str}}action_visibility_show, local_quickactions{{/str}}
+        </label>
+        <label class="d-block mb-2">
+            <input type="radio" name="qa-visibility-mode" value="hide">
+            {{#str}}action_visibility_hide, local_quickactions{{/str}}
+        </label>
+        <label class="d-block mb-2">
+            <input type="radio" name="qa-visibility-mode" value="stealth">
+            {{#str}}action_visibility_stealth, local_quickactions{{/str}}
+        </label>
+    </div>
+    <div class="d-flex gap-2">
+        <button type="button" class="btn btn-secondary" data-action="qa-back">{{#str}}back{{/str}}</button>
+        <button type="button" class="btn btn-primary" data-action="qa-preview">{{#str}}dialog_preview, local_quickactions{{/str}}</button>
+    </div>
+</div>

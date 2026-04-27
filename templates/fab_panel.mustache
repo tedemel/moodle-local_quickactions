@@ -1,0 +1,89 @@
+{{!
+    @template local_quickactions/fab_panel
+
+    Floating action button + bottom-sheet panel container.
+
+    Context:
+    * courseid - int
+    * fabAria, fabLabel - strings
+    * panelTitle, subtitleNone - strings
+    * closeStr, clearStr, selectAllStr, lassoHint - strings
+    * actions - array of {id, name, description, icon}
+}}
+<div id="local-quickactions-root"
+     class="local-quickactions-root"
+     data-courseid="{{courseid}}">
+
+    <button type="button"
+            class="local-quickactions-fab"
+            aria-label="{{fabAria}}"
+            aria-expanded="false"
+            aria-controls="local-quickactions-panel"
+            data-region="qa-fab">
+        <i class="fa fa-bolt" aria-hidden="true"></i>
+        <span class="local-quickactions-fab-label">{{fabLabel}}</span>
+    </button>
+
+    <div id="local-quickactions-panel"
+         class="local-quickactions-panel"
+         role="dialog"
+         aria-modal="false"
+         aria-labelledby="local-quickactions-paneltitle"
+         hidden>
+
+        <div class="local-quickactions-panel-header">
+            <h3 id="local-quickactions-paneltitle" class="local-quickactions-panel-title">
+                {{panelTitle}}
+            </h3>
+            <div class="local-quickactions-panel-subtitle"
+                 data-region="qa-subtitle"
+                 data-empty-text="{{subtitleNone}}">
+                {{subtitleNone}}
+            </div>
+            <button type="button"
+                    class="local-quickactions-help-btn btn btn-link btn-sm"
+                    data-action="qa-help"
+                    title="Tour starten"
+                    aria-label="Tour starten">
+                <i class="fa fa-question-circle" aria-hidden="true"></i>
+            </button>
+            <button type="button"
+                    class="local-quickactions-close-btn"
+                    data-action="qa-close"
+                    aria-label="{{closeStr}}">
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </button>
+        </div>
+
+        <div class="local-quickactions-panel-toolbar">
+            <button type="button" class="btn btn-link btn-sm" data-action="qa-selectall">
+                <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                {{selectAllStr}}
+            </button>
+            <button type="button" class="btn btn-link btn-sm" data-action="qa-clear">
+                <i class="fa fa-eraser" aria-hidden="true"></i>
+                {{clearStr}}
+            </button>
+            <span class="local-quickactions-lasso-hint">{{lassoHint}}</span>
+        </div>
+
+        <div class="local-quickactions-actions-grid">
+            {{#actions}}
+                <button type="button"
+                        class="local-quickactions-action-btn"
+                        data-action-id="{{id}}"
+                        data-region="qa-action"
+                        title="{{description}}">
+                    <i class="fa fa-{{icon}}" aria-hidden="true"></i>
+                    <span class="local-quickactions-action-name">{{name}}</span>
+                </button>
+            {{/actions}}
+        </div>
+
+        <div class="local-quickactions-action-dialog" data-region="qa-dialog" hidden></div>
+
+        <div class="local-quickactions-lasso-overlay" data-region="qa-lasso" hidden>
+            <div class="local-quickactions-lasso-rect" data-region="qa-lasso-rect"></div>
+        </div>
+    </div>
+</div>

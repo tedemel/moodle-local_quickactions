@@ -1,0 +1,33 @@
+{{!
+    @template local_quickactions/preview_table
+
+    Context:
+    * intro - string
+    * rows - [{label, before, after}]
+    * applyStr, cancelStr - strings
+}}
+<div class="local-quickactions-preview">
+    <p class="local-quickactions-preview-intro">{{intro}}</p>
+    <table class="local-quickactions-preview-table table table-sm">
+        <thead>
+            <tr>
+                <th>{{#str}}name{{/str}}</th>
+                <th>{{#str}}before, moodle{{/str}}</th>
+                <th>{{#str}}after, moodle{{/str}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#rows}}
+                <tr>
+                    <td>{{label}}</td>
+                    <td><code>{{before}}</code></td>
+                    <td><code>{{after}}</code></td>
+                </tr>
+            {{/rows}}
+        </tbody>
+    </table>
+    <div class="local-quickactions-preview-actions">
+        <button type="button" class="btn btn-secondary" data-action="qa-cancel">{{cancelStr}}</button>
+        <button type="button" class="btn btn-primary" data-action="qa-apply">{{applyStr}}</button>
+    </div>
+</div>
