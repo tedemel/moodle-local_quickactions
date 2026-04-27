@@ -25,10 +25,11 @@
 namespace local_quickactions\action;
 
 /**
+ * Tests for visibility_test.
+ *
  * @covers \local_quickactions\action\visibility
  */
 final class visibility_test extends \advanced_testcase {
-
     /**
      * test_validate_throws_on_no_selection.
      */

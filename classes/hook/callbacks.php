@@ -28,7 +28,6 @@ namespace local_quickactions\hook;
  * Class callbacks.
  */
 class callbacks {
-
     /**
      * before_standard_top_of_body_html.
      */

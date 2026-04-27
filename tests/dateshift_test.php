@@ -25,10 +25,11 @@
 namespace local_quickactions\action;
 
 /**
+ * Tests for dateshift_test.
+ *
  * @covers \local_quickactions\action\dateshift
  */
 final class dateshift_test extends \advanced_testcase {
-
     /**
      * test_validate_rejects_no_target.
      */

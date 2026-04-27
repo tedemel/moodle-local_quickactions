@@ -35,7 +35,6 @@ use local_quickactions\event\action_executed;
  * Class execute.
  */
 class execute extends external_api {
-
     /**
      * execute_parameters.
      */

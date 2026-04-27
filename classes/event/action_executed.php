@@ -30,7 +30,6 @@ defined('MOODLE_INTERNAL') || die();
  * Class action_executed.
  */
 class action_executed extends \core\event\base {
-
     /**
      * init.
      */

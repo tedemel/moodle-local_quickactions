@@ -25,10 +25,11 @@
 namespace local_quickactions\action;
 
 /**
+ * Tests for move_test.
+ *
  * @covers \local_quickactions\action\move
  */
 final class move_test extends \advanced_testcase {
-
     /**
      * test_execute_moves_module.
      */

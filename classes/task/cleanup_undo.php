@@ -28,7 +28,6 @@ namespace local_quickactions\task;
  * Class cleanup_undo.
  */
 class cleanup_undo extends \core\task\scheduled_task {
-
     /**
      * get_name.
      */

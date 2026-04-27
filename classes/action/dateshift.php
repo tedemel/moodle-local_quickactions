@@ -28,7 +28,6 @@ namespace local_quickactions\action;
  * Class dateshift.
  */
 class dateshift implements action_interface {
-
     /**
      * get_id.
      */
@@ -186,7 +185,10 @@ class dateshift implements action_interface {
         $undoid = 0;
         if ($success > 0 && !empty($snapshot['records'])) {
             $undoid = \local_quickactions\local\undo_store::record(
-                (int)$USER->id, $courseid, self::get_id(), $snapshot
+                (int)$USER->id,
+                $courseid,
+                self::get_id(),
+                $snapshot
             );
         }
 

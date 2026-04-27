@@ -28,7 +28,6 @@ namespace local_quickactions\action;
  * Class move.
  */
 class move implements action_interface {
-
     /**
      * get_id.
      */
@@ -103,7 +102,9 @@ class move implements action_interface {
             $rows[] = [
                 'cmid' => $cmid,
                 'label' => format_string($cm->name),
-                'before' => $currentsection ? format_string($currentsection->name ?: get_string('section') . ' ' . $cm->sectionnum) : '?',
+                'before' => $currentsection
+                    ? format_string($currentsection->name ?: get_string('section') . ' ' . $cm->sectionnum)
+                    : '?',
                 'after' => format_string($targetname),
             ];
         }
@@ -162,7 +163,10 @@ class move implements action_interface {
         $undoid = 0;
         if ($success > 0 && !empty($snapshot['records'])) {
             $undoid = \local_quickactions\local\undo_store::record(
-                (int)$USER->id, $courseid, self::get_id(), $snapshot
+                (int)$USER->id,
+                $courseid,
+                self::get_id(),
+                $snapshot
             );
         }
 

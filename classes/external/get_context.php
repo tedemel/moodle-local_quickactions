@@ -34,7 +34,6 @@ use core_external\external_value;
  * Class get_context.
  */
 class get_context extends external_api {
-
     /**
      * execute_parameters.
      */

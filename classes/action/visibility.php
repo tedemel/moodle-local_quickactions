@@ -28,7 +28,6 @@ namespace local_quickactions\action;
  * Class visibility.
  */
 class visibility implements action_interface {
-
     /**
      * get_id.
      */
@@ -190,7 +189,10 @@ class visibility implements action_interface {
         $undoid = 0;
         if ($success > 0 && (!empty($snapshot['cms']) || !empty($snapshot['sections']))) {
             $undoid = \local_quickactions\local\undo_store::record(
-                (int)$USER->id, $courseid, self::get_id(), $snapshot
+                (int)$USER->id,
+                $courseid,
+                self::get_id(),
+                $snapshot
             );
         }
 

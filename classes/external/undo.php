@@ -33,7 +33,6 @@ use core_external\external_value;
  * Class undo.
  */
 class undo extends external_api {
-
     /**
      * execute_parameters.
      */

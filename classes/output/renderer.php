@@ -28,7 +28,6 @@ namespace local_quickactions\output;
  * Class renderer.
  */
 class renderer extends \plugin_renderer_base {
-
     /**
      * render_fab_and_panel.
      */

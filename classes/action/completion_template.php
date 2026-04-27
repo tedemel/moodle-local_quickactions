@@ -130,7 +130,12 @@ class completion_template implements action_interface {
         $templatecmid = (int)$params['templatecmid'];
         $tplrec = $DB->get_record('course_modules', ['id' => $templatecmid], 'id, ' . implode(', ', self::COMPLETION_FIELDS));
         if (!$tplrec) {
-            return ['success' => 0, 'failed' => 1, 'errors' => [['cmid' => $templatecmid, 'message' => 'template missing']], 'undoid' => 0];
+            return [
+                'success' => 0,
+                'failed' => 1,
+                'errors' => [['cmid' => $templatecmid, 'message' => 'template missing']],
+                'undoid' => 0,
+            ];
         }
 
         // Snapshot before changes (skip template — it is unchanged).
@@ -172,7 +177,10 @@ class completion_template implements action_interface {
         $undoid = 0;
         if ($success > 0 && !empty($snapshot['records'])) {
             $undoid = \local_quickactions\local\undo_store::record(
-                (int)$USER->id, $courseid, self::get_id(), $snapshot
+                (int)$USER->id,
+                $courseid,
+                self::get_id(),
+                $snapshot
             );
         }
 

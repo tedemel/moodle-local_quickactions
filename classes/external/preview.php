@@ -34,7 +34,6 @@ use core_external\external_value;
  * Class preview.
  */
 class preview extends external_api {
-
     /**
      * execute_parameters.
      */

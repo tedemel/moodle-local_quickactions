@@ -28,7 +28,6 @@ namespace local_quickactions\action;
  * Class section_duplicate.
  */
 class section_duplicate implements action_interface {
-
     /**
      * get_id.
      */
@@ -143,7 +142,9 @@ class section_duplicate implements action_interface {
 
             // Snapshot for undo: just the new section id — restore deletes it (and its content).
             $undoid = \local_quickactions\local\undo_store::record(
-                (int)$USER->id, $courseid, self::get_id(),
+                (int)$USER->id,
+                $courseid,
+                self::get_id(),
                 ['newsectionid' => (int)$newsection->id]
             );
 

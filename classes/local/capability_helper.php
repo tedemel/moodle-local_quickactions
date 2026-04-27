@@ -28,7 +28,6 @@ namespace local_quickactions\local;
  * Class capability_helper.
  */
 class capability_helper {
-
     /**
      * can_use.
      */
