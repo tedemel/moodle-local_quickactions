@@ -246,7 +246,19 @@ const runPreview = async() => {
         dialog.innerHTML = '';
         Templates.appendNodeContents(dialog, html, js);
     } catch (err) {
-        Notification.exception(err);
+        // Translate known plugin error codes into inline notifications instead of
+        // the full Moodle exception dialog with stack trace.
+        const code = err && (err.errorcode || err.debuginfo);
+        if (code === 'error_completion_needs_two'
+            || code === 'error_dateshift_zero'
+            || code === 'error_noselection'
+            || code === 'error_invalidsection'
+            || code === 'error_invalidcm') {
+            const msg = await getString(code, 'local_quickactions');
+            Notification.addNotification({message: msg, type: 'error'});
+        } else {
+            Notification.exception(err);
+        }
     }
 };
 
