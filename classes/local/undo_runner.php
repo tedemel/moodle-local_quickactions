@@ -8,11 +8,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Restore snapshots produced by Quick Actions.
@@ -24,8 +24,10 @@
 
 namespace local_quickactions\local;
 
+/**
+ * Class undo_runner.
+ */
 class undo_runner {
-
     /**
      * Restore the snapshot identified by $undoid in the given course context.
      *
@@ -86,6 +88,9 @@ class undo_runner {
         return ['restored' => $restored];
     }
 
+    /**
+     * restore_visibility.
+     */
     private static function restore_visibility(array $snapshot, int $courseid): int {
         $count = 0;
         foreach ($snapshot['cms'] ?? [] as $row) {
@@ -115,6 +120,9 @@ class undo_runner {
         return $count;
     }
 
+    /**
+     * restore_dateshift.
+     */
     private static function restore_dateshift(array $snapshot, int $courseid): int {
         global $DB;
         $count = 0;

@@ -8,11 +8,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Plugin version metadata for local_quickactions.
@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 $plugin->component = 'local_quickactions';
 $plugin->version   = 2026050500;
 $plugin->release   = '0.2.0';
-$plugin->requires  = 2025041900;
+$plugin->requires  = 2025041400;
 $plugin->supported = [500, 502];
 $plugin->maturity  = MATURITY_ALPHA;
 $plugin->dependencies = [];

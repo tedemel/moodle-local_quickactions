@@ -8,11 +8,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Imports the bundled Quick Actions user tour.
@@ -24,8 +24,10 @@
 
 namespace local_quickactions\local;
 
+/**
+ * Class tour_installer.
+ */
 class tour_installer {
-
     /**
      * Import the bundled tour JSON if tool_usertours is available
      * and a tour with the same name does not already exist.

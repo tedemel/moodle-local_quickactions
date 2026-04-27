@@ -7,11 +7,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * FAB toggle module.
@@ -105,7 +105,7 @@ const closePanel = (panel, fab) => {
  *
  * @param {number} tourId
  */
-const startTour = async (tourId) => {
+const startTour = async(tourId) => {
     try {
         // Close the panel first so its FIXED-position card doesn't overlap the tour popovers.
         const panel = document.querySelector(SELECTORS.panel);

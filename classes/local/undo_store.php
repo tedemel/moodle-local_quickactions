@@ -8,11 +8,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Undo snapshot persistence.
@@ -24,11 +24,16 @@
 
 namespace local_quickactions\local;
 
+/**
+ * Class undo_store.
+ */
 class undo_store {
-
     /** Records older than this become eligible for cleanup. */
     public const TTL_SECONDS = 1800; // 30 minutes.
 
+    /**
+     * record.
+     */
     public static function record(int $userid, int $courseid, string $actionid, array $snapshot): int {
         global $DB;
         return (int)$DB->insert_record('local_quickactions_undo', (object)[
@@ -40,12 +45,18 @@ class undo_store {
         ]);
     }
 
+    /**
+     * get.
+     */
     public static function get(int $undoid): ?\stdClass {
         global $DB;
         $rec = $DB->get_record('local_quickactions_undo', ['id' => $undoid]);
         return $rec ?: null;
     }
 
+    /**
+     * delete.
+     */
     public static function delete(int $undoid): void {
         global $DB;
         $DB->delete_records('local_quickactions_undo', ['id' => $undoid]);

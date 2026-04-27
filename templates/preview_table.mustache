@@ -1,10 +1,26 @@
 {{!
     @template local_quickactions/preview_table
 
-    Context:
-    * intro - string
-    * rows - [{label, before, after}]
-    * applyStr, cancelStr - strings
+    Before/after preview rendered before applying any Quick Action.
+
+    @copyright 2026 Tessa Demel
+    @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+    Context variables required for this template:
+    * intro string Intro paragraph above the table.
+    * rows array List of rows ({label, before, after}).
+    * applyStr string Apply button label.
+    * cancelStr string Cancel button label.
+
+    Example context (json):
+    {
+        "intro": "The following changes will be applied:",
+        "rows": [
+            {"label": "Quiz 1", "before": "visible", "after": "hidden"}
+        ],
+        "applyStr": "Apply",
+        "cancelStr": "Cancel"
+    }
 }}
 <div class="local-quickactions-preview">
     <p class="local-quickactions-preview-intro">{{intro}}</p>

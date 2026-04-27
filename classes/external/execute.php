@@ -8,11 +8,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Web service: execute.
@@ -31,8 +31,14 @@ use core_external\external_single_structure;
 use core_external\external_value;
 use local_quickactions\event\action_executed;
 
+/**
+ * Class execute.
+ */
 class execute extends external_api {
 
+    /**
+     * execute_parameters.
+     */
     public static function execute_parameters(): external_function_parameters {
         return new external_function_parameters([
             'courseid' => new external_value(PARAM_INT, 'Course id'),
@@ -45,6 +51,9 @@ class execute extends external_api {
         ]);
     }
 
+    /**
+     * execute.
+     */
     public static function execute(int $courseid, string $actionid, array $cmids, string $paramsjson): array {
         $params = self::validate_parameters(self::execute_parameters(), [
             'courseid' => $courseid,
@@ -90,6 +99,9 @@ class execute extends external_api {
         ];
     }
 
+    /**
+     * execute_returns.
+     */
     public static function execute_returns(): external_single_structure {
         return new external_single_structure([
             'success' => new external_value(PARAM_INT, 'Items succeeded'),

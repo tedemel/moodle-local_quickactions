@@ -8,11 +8,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Dateshift Quick Action.
@@ -24,28 +24,49 @@
 
 namespace local_quickactions\action;
 
+/**
+ * Class dateshift.
+ */
 class dateshift implements action_interface {
 
+    /**
+     * get_id.
+     */
     public static function get_id(): string {
         return 'dateshift';
     }
 
+    /**
+     * get_name.
+     */
     public static function get_name(): string {
         return get_string('action_dateshift', 'local_quickactions');
     }
 
+    /**
+     * get_description.
+     */
     public static function get_description(): string {
         return get_string('action_dateshift_desc', 'local_quickactions');
     }
 
+    /**
+     * get_icon.
+     */
     public static function get_icon(): string {
         return 'calendar';
     }
 
+    /**
+     * get_required_capability.
+     */
     public static function get_required_capability(): string {
         return 'local/quickactions:bulkupdate';
     }
 
+    /**
+     * validate.
+     */
     public static function validate(array $params, array $cmids, int $courseid, \context_course $context): void {
         $sectionids = $params['sectionids'] ?? [];
         if (empty($cmids) && empty($sectionids)) {
@@ -57,6 +78,9 @@ class dateshift implements action_interface {
         }
     }
 
+    /**
+     * preview.
+     */
     public static function preview(array $params, array $cmids, int $courseid, \context_course $context): array {
         $cmids = self::expand_with_sections($cmids, $params['sectionids'] ?? [], $courseid);
         $delta = self::compute_delta_seconds($params, $cmids, $courseid);
@@ -96,6 +120,9 @@ class dateshift implements action_interface {
         return $rows;
     }
 
+    /**
+     * execute.
+     */
     public static function execute(array $params, array $cmids, int $courseid, \context_course $context): array {
         global $DB, $USER;
         $cmids = self::expand_with_sections($cmids, $params['sectionids'] ?? [], $courseid);
@@ -218,6 +245,9 @@ class dateshift implements action_interface {
         return $target - time();
     }
 
+    /**
+     * find_earliest_date.
+     */
     private static function find_earliest_date(array $cmids, int $courseid): int {
         $modinfo = get_fast_modinfo($courseid);
         $earliest = 0;

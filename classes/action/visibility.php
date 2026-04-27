@@ -8,11 +8,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Visibility Quick Action.
@@ -24,28 +24,49 @@
 
 namespace local_quickactions\action;
 
+/**
+ * Class visibility.
+ */
 class visibility implements action_interface {
 
+    /**
+     * get_id.
+     */
     public static function get_id(): string {
         return 'visibility';
     }
 
+    /**
+     * get_name.
+     */
     public static function get_name(): string {
         return get_string('action_visibility', 'local_quickactions');
     }
 
+    /**
+     * get_description.
+     */
     public static function get_description(): string {
         return get_string('action_visibility_desc', 'local_quickactions');
     }
 
+    /**
+     * get_icon.
+     */
     public static function get_icon(): string {
         return 'eye';
     }
 
+    /**
+     * get_required_capability.
+     */
     public static function get_required_capability(): string {
         return 'local/quickactions:bulkupdate';
     }
 
+    /**
+     * validate.
+     */
     public static function validate(array $params, array $cmids, int $courseid, \context_course $context): void {
         $mode = $params['mode'] ?? '';
         if (!in_array($mode, ['show', 'hide', 'stealth'], true)) {
@@ -57,6 +78,9 @@ class visibility implements action_interface {
         }
     }
 
+    /**
+     * preview.
+     */
     public static function preview(array $params, array $cmids, int $courseid, \context_course $context): array {
         $mode = $params['mode'];
         $cmids = \local_quickactions\action\dateshift::expand_with_sections($cmids, $params['sectionids'] ?? [], $courseid);
@@ -83,6 +107,9 @@ class visibility implements action_interface {
         return $rows;
     }
 
+    /**
+     * execute.
+     */
     public static function execute(array $params, array $cmids, int $courseid, \context_course $context): array {
         global $CFG, $DB, $USER;
         require_once($CFG->dirroot . '/course/lib.php');
@@ -170,6 +197,9 @@ class visibility implements action_interface {
         return ['success' => $success, 'failed' => $failed, 'errors' => $errors, 'undoid' => $undoid];
     }
 
+    /**
+     * format_state.
+     */
     private static function format_state(int $visible, int $oncoursepage): string {
         if (!$visible) {
             return get_string('hidden');

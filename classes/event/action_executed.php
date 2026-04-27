@@ -8,11 +8,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Action executed event.
@@ -26,17 +26,29 @@ namespace local_quickactions\event;
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Class action_executed.
+ */
 class action_executed extends \core\event\base {
 
+    /**
+     * init.
+     */
     protected function init() {
         $this->data['crud'] = 'u';
         $this->data['edulevel'] = self::LEVEL_TEACHING;
     }
 
+    /**
+     * get_name.
+     */
     public static function get_name() {
         return get_string('event_actionexecuted', 'local_quickactions');
     }
 
+    /**
+     * get_description.
+     */
     public function get_description() {
         $action = $this->other['actionid'] ?? '?';
         $success = $this->other['success'] ?? 0;

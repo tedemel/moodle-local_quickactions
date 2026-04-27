@@ -7,11 +7,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Action button -> dialog -> preview -> execute flow.
@@ -47,7 +47,7 @@ export const init = (cfg) => {
         return;
     }
 
-    panel.addEventListener('click', async (e) => {
+    panel.addEventListener('click', async(e) => {
         const btn = e.target.closest(SELECTORS.actionBtn);
         if (btn) {
             await openActionDialog(btn.dataset.actionId);
@@ -71,7 +71,7 @@ export const init = (cfg) => {
         }
     });
 
-    document.addEventListener('local_quickactions:panelopened', async () => {
+    document.addEventListener('local_quickactions:panelopened', async() => {
         if (courseContext === null) {
             try {
                 courseContext = await Ajax.call([{
@@ -85,7 +85,7 @@ export const init = (cfg) => {
     });
 };
 
-const openActionDialog = async (actionId) => {
+const openActionDialog = async(actionId) => {
     currentActionId = actionId;
 
     if (['visibility', 'dateshift', 'move', 'completion_template'].includes(actionId) && !hasSelection()) {
@@ -161,7 +161,7 @@ const collectActionParams = () => {
         }
         case 'dateshift': {
             const dateStr = document.getElementById('qa-dateshift-target').value;
-            // datetime-local value e.g. "2026-06-01T14:30" — interpreted as local time.
+            // Datetime-local value e.g. "2026-06-01T14:30" — interpreted as local time.
             const target = dateStr ? Math.floor(new Date(dateStr).getTime() / 1000) : 0;
             return {targetdate: target};
         }
@@ -186,7 +186,7 @@ const collectActionParams = () => {
     }
 };
 
-const runPreview = async () => {
+const runPreview = async() => {
     const cmids = currentActionId === 'section_duplicate' ? [] : getSelectedCmids();
     const params = collectActionParams();
     if (currentActionId !== 'section_duplicate') {
@@ -220,7 +220,7 @@ const runPreview = async () => {
     }
 };
 
-const runExecute = async () => {
+const runExecute = async() => {
     const cmids = currentActionId === 'section_duplicate' ? [] : getSelectedCmids();
     const params = pendingParams || collectActionParams();
     if (currentActionId !== 'section_duplicate' && !params.sectionids) {

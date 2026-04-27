@@ -8,11 +8,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Registry for Quick Actions.
@@ -24,8 +24,10 @@
 
 namespace local_quickactions\action;
 
+/**
+ * Class registry.
+ */
 class registry {
-
     /**
      * @return array<string, class-string<action_interface>>
      */
@@ -48,6 +50,9 @@ class registry {
         return $all[$id] ?? null;
     }
 
+    /**
+     * get_metadata_for_context.
+     */
     public static function get_metadata_for_context(\context_course $context): array {
         $items = [];
         foreach (self::get_all() as $id => $cls) {

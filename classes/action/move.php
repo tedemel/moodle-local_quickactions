@@ -8,11 +8,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Move Quick Action.
@@ -24,28 +24,49 @@
 
 namespace local_quickactions\action;
 
+/**
+ * Class move.
+ */
 class move implements action_interface {
 
+    /**
+     * get_id.
+     */
     public static function get_id(): string {
         return 'move';
     }
 
+    /**
+     * get_name.
+     */
     public static function get_name(): string {
         return get_string('action_move', 'local_quickactions');
     }
 
+    /**
+     * get_description.
+     */
     public static function get_description(): string {
         return get_string('action_move_desc', 'local_quickactions');
     }
 
+    /**
+     * get_icon.
+     */
     public static function get_icon(): string {
         return 'arrow-right';
     }
 
+    /**
+     * get_required_capability.
+     */
     public static function get_required_capability(): string {
         return 'local/quickactions:bulkupdate';
     }
 
+    /**
+     * validate.
+     */
     public static function validate(array $params, array $cmids, int $courseid, \context_course $context): void {
         global $DB;
         if (empty($cmids)) {
@@ -60,6 +81,9 @@ class move implements action_interface {
         }
     }
 
+    /**
+     * preview.
+     */
     public static function preview(array $params, array $cmids, int $courseid, \context_course $context): array {
         global $DB;
         $targetsectionid = (int)$params['targetsectionid'];
@@ -86,6 +110,9 @@ class move implements action_interface {
         return $rows;
     }
 
+    /**
+     * execute.
+     */
     public static function execute(array $params, array $cmids, int $courseid, \context_course $context): array {
         global $CFG, $DB, $USER;
         require_once($CFG->dirroot . '/course/lib.php');

@@ -147,7 +147,7 @@
 }
 
 .local-quickactions-selected {
-    outline: 2px solid var(--bs-primary, #007bff) !important;
+    outline: 2px solid var(--bs-primary, #007bff);
     outline-offset: 2px;
     background: rgba(0, 123, 255, 0.08);
 }

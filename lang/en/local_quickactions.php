@@ -8,11 +8,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * English language strings for local_quickactions.
@@ -131,5 +131,3 @@ $string['tour_step4_title'] = 'Mark sections';
 $string['tour_step4_content'] = 'Whole sections can be selected too — visibility and dates then apply to all activities inside.';
 $string['tour_step5_title'] = 'Four actions';
 $string['tour_step5_content'] = '<ul><li><b>Visibility:</b> show, hide, or stealth</li><li><b>Shift dates:</b> pick a target date and time</li><li><b>Duplicate section:</b> with all its content</li><li><b>Move to section:</b> move activities between sections</li></ul>Each action shows a preview before applying.';
-
-

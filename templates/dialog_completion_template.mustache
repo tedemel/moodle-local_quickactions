@@ -1,7 +1,21 @@
 {{!
     @template local_quickactions/dialog_completion_template
-    Context:
-    * candidates - [{cmid, label}]
+
+    Completion-template action dialog (pick template CM).
+
+    @copyright 2026 Tessa Demel
+    @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+    Context variables required for this template:
+    * candidates array List of {cmid, label} of currently selected course modules.
+
+    Example context (json):
+    {
+        "candidates": [
+            {"cmid": 42, "label": "Quiz 1"},
+            {"cmid": 43, "label": "Assignment 1"}
+        ]
+    }
 }}
 <div class="local-quickactions-dialog">
     <h4 class="h6">{{#str}}action_completion_template, local_quickactions{{/str}}</h4>

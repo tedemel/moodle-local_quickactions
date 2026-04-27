@@ -8,11 +8,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Section duplicate Quick Action.
@@ -24,28 +24,49 @@
 
 namespace local_quickactions\action;
 
+/**
+ * Class section_duplicate.
+ */
 class section_duplicate implements action_interface {
 
+    /**
+     * get_id.
+     */
     public static function get_id(): string {
         return 'section_duplicate';
     }
 
+    /**
+     * get_name.
+     */
     public static function get_name(): string {
         return get_string('action_section_duplicate', 'local_quickactions');
     }
 
+    /**
+     * get_description.
+     */
     public static function get_description(): string {
         return get_string('action_section_duplicate_desc', 'local_quickactions');
     }
 
+    /**
+     * get_icon.
+     */
     public static function get_icon(): string {
         return 'copy';
     }
 
+    /**
+     * get_required_capability.
+     */
     public static function get_required_capability(): string {
         return 'local/quickactions:duplicatesection';
     }
 
+    /**
+     * validate.
+     */
     public static function validate(array $params, array $cmids, int $courseid, \context_course $context): void {
         $sectionid = (int)($params['sectionid'] ?? 0);
         if ($sectionid <= 0) {
@@ -57,6 +78,9 @@ class section_duplicate implements action_interface {
         }
     }
 
+    /**
+     * preview.
+     */
     public static function preview(array $params, array $cmids, int $courseid, \context_course $context): array {
         global $DB;
         $sectionid = (int)$params['sectionid'];
