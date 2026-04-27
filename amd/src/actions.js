@@ -117,8 +117,19 @@ const openActionDialog = async(actionId) => {
             data = {sections: courseContext?.sections || []};
             break;
         case 'completion_template': {
-            // Build candidate list from currently selected cmids; fetch their names from DOM.
-            const candidates = getSelectedCmids().map((cmid) => {
+            // Combine direct cmids and cmids inside selected sections (DOM-walk).
+            const allCmids = new Set(getSelectedCmids());
+            getSelectedSectionIds().forEach((sid) => {
+                document.querySelectorAll(
+                    `[data-for="section"][data-id="${sid}"] [data-for="cmitem"][data-id]`
+                ).forEach((cmEl) => {
+                    const cmid = parseInt(cmEl.dataset.id, 10);
+                    if (cmid) {
+                        allCmids.add(cmid);
+                    }
+                });
+            });
+            const candidates = Array.from(allCmids).map((cmid) => {
                 const el = document.querySelector(`[data-for="cmitem"][data-id="${cmid}"]`);
                 const name = el?.querySelector('.activity-item .instancename, .activity-item a')?.textContent?.trim()
                     || `cm ${cmid}`;

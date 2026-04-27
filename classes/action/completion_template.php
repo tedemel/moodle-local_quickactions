@@ -80,10 +80,16 @@ class completion_template implements action_interface {
         if ($templatecmid <= 0) {
             throw new \moodle_exception('error_invalidcm', 'local_quickactions');
         }
-        if (count($cmids) < 2) {
+        // Expand any selected sections to their member cmids so the user can use sections too.
+        $expanded = \local_quickactions\action\dateshift::expand_with_sections(
+            $cmids,
+            $params['sectionids'] ?? [],
+            $courseid
+        );
+        if (count($expanded) < 2) {
             throw new \moodle_exception('error_completion_needs_two', 'local_quickactions');
         }
-        if (!in_array($templatecmid, array_map('intval', $cmids), true)) {
+        if (!in_array($templatecmid, array_map('intval', $expanded), true)) {
             throw new \moodle_exception('error_invalidcm', 'local_quickactions');
         }
     }
@@ -93,6 +99,11 @@ class completion_template implements action_interface {
      */
     public static function preview(array $params, array $cmids, int $courseid, \context_course $context): array {
         global $DB;
+        $cmids = \local_quickactions\action\dateshift::expand_with_sections(
+            $cmids,
+            $params['sectionids'] ?? [],
+            $courseid
+        );
         $templatecmid = (int)$params['templatecmid'];
         $modinfo = get_fast_modinfo($courseid);
         $template = $modinfo->cms[$templatecmid] ?? null;
@@ -127,6 +138,11 @@ class completion_template implements action_interface {
      */
     public static function execute(array $params, array $cmids, int $courseid, \context_course $context): array {
         global $DB, $USER;
+        $cmids = \local_quickactions\action\dateshift::expand_with_sections(
+            $cmids,
+            $params['sectionids'] ?? [],
+            $courseid
+        );
         $templatecmid = (int)$params['templatecmid'];
         $tplrec = $DB->get_record('course_modules', ['id' => $templatecmid], 'id, ' . implode(', ', self::COMPLETION_FIELDS));
         if (!$tplrec) {

@@ -142,7 +142,19 @@ const selectAll = () => {
         }
         state.selectedCms.add(cmid);
         el.classList.add('local-quickactions-selected');
-        const cb = el.querySelector(':scope > .local-quickactions-checkbox input');
+        const cb = el.querySelector('.local-quickactions-checkbox input');
+        if (cb) {
+            cb.checked = true;
+        }
+    });
+    document.querySelectorAll(SELECTORS.section).forEach((el) => {
+        const sid = parseInt(el.dataset.id, 10);
+        if (!sid) {
+            return;
+        }
+        state.selectedSections.add(sid);
+        el.classList.add('local-quickactions-selected');
+        const cb = el.querySelector('.local-quickactions-section-checkbox input');
         if (cb) {
             cb.checked = true;
         }
