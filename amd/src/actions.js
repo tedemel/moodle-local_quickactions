@@ -298,6 +298,8 @@ const runExecute = async() => {
                 sessionStorage.setItem('local_quickactions:lastundo', JSON.stringify({
                     undoid: result.undoid,
                     courseid: config.courseid,
+                    successcount: result.success,
+                    failcount: result.failed,
                     ts: Date.now(),
                 }));
             } catch (e) {

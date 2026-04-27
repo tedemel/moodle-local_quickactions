@@ -89,12 +89,14 @@ const showUndoNotificationIfPending = async(config) => {
     sessionStorage.removeItem(UNDO_STORAGE_KEY);
 
     const label = await getString('undo_button', 'local_quickactions');
+    const successCount = data.successcount ?? 0;
+    const headline = await getString('result_success', 'local_quickactions', successCount);
     const id = 'local-quickactions-undo-toast';
     document.getElementById(id)?.remove();
     const el = document.createElement('div');
     el.id = id;
     el.className = 'alert alert-info local-quickactions-undo-toast';
-    el.innerHTML = `<span class="me-2">${escapeHtml(await getString('result_success', 'local_quickactions', '?'))}</span>`
+    el.innerHTML = `<span class="me-2">${escapeHtml(headline)}</span>`
         + `<button type="button" class="btn btn-sm btn-outline-primary">${escapeHtml(label)}</button>`;
     document.body.appendChild(el);
 
