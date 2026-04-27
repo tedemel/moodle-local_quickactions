@@ -129,5 +129,5 @@ $string['tour_step3_title'] = 'Mark activities';
 $string['tour_step3_content'] = 'Tick the box next to an activity to select it. Multiple activities can be selected at once.';
 $string['tour_step4_title'] = 'Mark sections';
 $string['tour_step4_content'] = 'Whole sections can be selected too — visibility and dates then apply to all activities inside.';
-$string['tour_step5_title'] = 'Four actions';
-$string['tour_step5_content'] = '<ul><li><b>Visibility:</b> show, hide, or stealth</li><li><b>Shift dates:</b> pick a target date and time</li><li><b>Duplicate section:</b> with all its content</li><li><b>Move to section:</b> move activities between sections</li></ul>Each action shows a preview before applying.';
+$string['tour_step5_title'] = 'Five actions';
+$string['tour_step5_content'] = '<ul><li><b>Visibility:</b> show, hide, or stealth</li><li><b>Shift dates:</b> pick a target date and time</li><li><b>Duplicate section:</b> with all its content</li><li><b>Move to section:</b> move activities between sections</li><li><b>Apply completion from template:</b> copy completion settings of one selected activity to all the others</li></ul>Each action shows a preview before applying.';

@@ -129,5 +129,5 @@ $string['tour_step3_title'] = 'Aktivitäten markieren';
 $string['tour_step3_content'] = 'Setze ein Häkchen vor einer Aktivität, um sie auszuwählen. Mehrere können gleichzeitig markiert werden.';
 $string['tour_step4_title'] = 'Abschnitte markieren';
 $string['tour_step4_content'] = 'Auch ganze Abschnitte können markiert werden — Sichtbarkeit und Termine wirken dann auf alle enthaltenen Aktivitäten.';
-$string['tour_step5_title'] = 'Vier Aktionen';
-$string['tour_step5_content'] = '<ul><li><b>Sichtbarkeit:</b> Anzeigen, Verstecken oder Stealth</li><li><b>Termine verschieben:</b> Zieldatum + Uhrzeit wählen</li><li><b>Sektion duplizieren:</b> mit allen Inhalten</li><li><b>In Sektion verschieben:</b> Aktivitäten zwischen Abschnitten umziehen</li></ul>Vor dem Anwenden bekommst du immer eine Vorschau.';
+$string['tour_step5_title'] = 'Fünf Aktionen';
+$string['tour_step5_content'] = '<ul><li><b>Sichtbarkeit:</b> Anzeigen, Verstecken oder Stealth</li><li><b>Termine verschieben:</b> Zieldatum + Uhrzeit wählen</li><li><b>Sektion duplizieren:</b> mit allen Inhalten</li><li><b>In Sektion verschieben:</b> Aktivitäten zwischen Abschnitten umziehen</li><li><b>Abschluss aus Vorlage:</b> Abschluss-Bedingungen einer markierten Aktivität auf alle anderen übertragen</li></ul>Vor dem Anwenden bekommst du immer eine Vorschau.';
