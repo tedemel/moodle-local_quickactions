@@ -68,7 +68,8 @@ class move implements action_interface {
      */
     public static function validate(array $params, array $cmids, int $courseid, \context_course $context): void {
         global $DB;
-        if (empty($cmids)) {
+        $sectionids = $params['sectionids'] ?? [];
+        if (empty($cmids) && empty($sectionids)) {
             throw new \moodle_exception('error_noselection', 'local_quickactions');
         }
         $targetsectionid = (int)($params['targetsectionid'] ?? 0);
@@ -85,6 +86,7 @@ class move implements action_interface {
      */
     public static function preview(array $params, array $cmids, int $courseid, \context_course $context): array {
         global $DB;
+        $cmids = \local_quickactions\action\dateshift::expand_with_sections($cmids, $params['sectionids'] ?? [], $courseid);
         $targetsectionid = (int)$params['targetsectionid'];
         $targetsection = $DB->get_record('course_sections', ['id' => $targetsectionid]);
         $targetname = $targetsection
@@ -118,6 +120,7 @@ class move implements action_interface {
         global $CFG, $DB, $USER;
         require_once($CFG->dirroot . '/course/lib.php');
 
+        $cmids = \local_quickactions\action\dateshift::expand_with_sections($cmids, $params['sectionids'] ?? [], $courseid);
         $targetsectionid = (int)$params['targetsectionid'];
         $modinfo = get_fast_modinfo($courseid);
 
