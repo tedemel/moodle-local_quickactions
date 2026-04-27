@@ -78,6 +78,9 @@ class undo_runner {
             case 'completion_template':
                 $restored = self::restore_completion_template($snapshot, $courseid);
                 break;
+            case 'availability_template':
+                $restored = self::restore_availability_template($snapshot, $courseid);
+                break;
             default:
                 throw new \moodle_exception('error_actionnotfound', 'local_quickactions');
         }
@@ -218,6 +221,24 @@ class undo_runner {
                 debugging('undo move cm: ' . $e->getMessage(), DEBUG_DEVELOPER);
             }
         }
+        return $count;
+    }
+
+    /**
+     * Undo availability_template: restore prior availability JSON per cm.
+     */
+    private static function restore_availability_template(array $snapshot, int $courseid): int {
+        global $DB;
+        $count = 0;
+        foreach ($snapshot['records'] ?? [] as $row) {
+            try {
+                $DB->set_field('course_modules', 'availability', $row['availability'], ['id' => (int)$row['cmid']]);
+                $count++;
+            } catch (\Throwable $e) {
+                debugging('undo availability_template cm: ' . $e->getMessage(), DEBUG_DEVELOPER);
+            }
+        }
+        rebuild_course_cache($courseid, true);
         return $count;
     }
 }

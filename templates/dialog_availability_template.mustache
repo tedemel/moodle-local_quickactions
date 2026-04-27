@@ -1,0 +1,38 @@
+{{!
+    @template local_quickactions/dialog_availability_template
+
+    Availability-template action dialog (pick template CM whose
+    restrict-access conditions are copied to others).
+
+    @copyright 2026 Tessa Demel
+    @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+    Context variables required for this template:
+    * candidates array List of {cmid, label} of currently selected course modules.
+
+    Example context (json):
+    {
+        "candidates": [
+            {"cmid": 42, "label": "Quiz 1"},
+            {"cmid": 43, "label": "Assignment 1"}
+        ]
+    }
+}}
+<div class="local-quickactions-dialog">
+    <h4 class="h6">{{#str}}action_availability_template, local_quickactions{{/str}}</h4>
+    <p class="text-muted">{{#str}}action_availability_template_desc, local_quickactions{{/str}}</p>
+
+    <div class="mb-3">
+        <label for="qa-availability-template-cm" class="form-label">{{#str}}action_completion_template_pick, local_quickactions{{/str}}</label>
+        <select id="qa-availability-template-cm" class="form-select">
+            {{#candidates}}
+                <option value="{{cmid}}">{{label}}</option>
+            {{/candidates}}
+        </select>
+    </div>
+
+    <div class="d-flex gap-2">
+        <button type="button" class="btn btn-secondary" data-action="qa-back">{{#str}}back{{/str}}</button>
+        <button type="button" class="btn btn-primary" data-action="qa-preview">{{#str}}dialog_preview, local_quickactions{{/str}}</button>
+    </div>
+</div>

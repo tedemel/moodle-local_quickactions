@@ -81,6 +81,13 @@ $string['action_move_target'] = 'Ziel-Sektion';
 $string['action_completion_template'] = 'Abschluss aus Vorlage übertragen';
 $string['action_completion_template_desc'] = 'Eine markierte Aktivität als Vorlage wählen — ihre Abschluss-Bedingungen werden auf alle anderen markierten übertragen.';
 $string['action_completion_template_pick'] = 'Vorlage wählen';
+
+$string['action_availability_template'] = 'Voraussetzungen aus Vorlage übertragen';
+$string['action_availability_template_desc'] = 'Eine markierte Aktivität als Vorlage wählen — ihre Voraussetzungen (Restrict access) werden auf alle anderen markierten übertragen.';
+$string['availability_summary_none'] = 'Keine Voraussetzungen';
+$string['availability_summary_set'] = 'Voraussetzungen gesetzt';
+$string['availability_summary_count'] = '{$a->count} Bedingung(en), verknüpft mit {$a->op}';
+$string['reason_availability_template_match'] = 'Alle Zielaktivitäten haben bereits dieselben Voraussetzungen wie die Vorlage.';
 $string['error_completion_needs_two'] = 'Mindestens zwei Aktivitäten markieren (eine Vorlage + Ziele).';
 
 $string['reason_move_already_there'] = 'Alle ausgewählten Aktivitäten sind bereits in der Ziel-Sektion.';
@@ -134,5 +141,5 @@ $string['tour_step3_title'] = 'Aktivitäten markieren';
 $string['tour_step3_content'] = 'Setze ein Häkchen vor einer Aktivität, um sie auszuwählen. Mehrere können gleichzeitig markiert werden.';
 $string['tour_step4_title'] = 'Abschnitte markieren';
 $string['tour_step4_content'] = 'Auch ganze Abschnitte können markiert werden — Sichtbarkeit und Termine wirken dann auf alle enthaltenen Aktivitäten.';
-$string['tour_step5_title'] = 'Fünf Aktionen';
-$string['tour_step5_content'] = '<ul><li><b>Sichtbarkeit:</b> Anzeigen, Verstecken oder Stealth</li><li><b>Termine verschieben:</b> Zieldatum + Uhrzeit wählen</li><li><b>Sektion duplizieren:</b> mit allen Inhalten</li><li><b>In Sektion verschieben:</b> Aktivitäten zwischen Abschnitten umziehen</li><li><b>Abschluss aus Vorlage:</b> Abschluss-Bedingungen einer markierten Aktivität auf alle anderen übertragen</li></ul>Vor dem Anwenden bekommst du immer eine Vorschau.';
+$string['tour_step5_title'] = 'Sechs Aktionen';
+$string['tour_step5_content'] = '<ul><li><b>Sichtbarkeit:</b> Anzeigen, Verstecken oder Stealth</li><li><b>Termine verschieben:</b> Zieldatum + Uhrzeit wählen</li><li><b>Sektion duplizieren:</b> mit allen Inhalten</li><li><b>In Sektion verschieben:</b> Aktivitäten zwischen Abschnitten umziehen</li><li><b>Abschluss aus Vorlage:</b> Abschluss-Bedingungen einer markierten Aktivität auf alle anderen übertragen</li><li><b>Voraussetzungen aus Vorlage:</b> Restrict-access-Bedingungen einer markierten Aktivität auf alle anderen übertragen</li></ul>Vor dem Anwenden bekommst du immer eine Vorschau.';

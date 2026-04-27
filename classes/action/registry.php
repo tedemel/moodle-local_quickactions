@@ -38,6 +38,7 @@ class registry {
             section_duplicate::get_id()    => section_duplicate::class,
             move::get_id()                 => move::class,
             completion_template::get_id()  => completion_template::class,
+            availability_template::get_id() => availability_template::class,
         ];
     }
 

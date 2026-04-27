@@ -81,6 +81,13 @@ $string['action_move_target'] = 'Target section';
 $string['action_completion_template'] = 'Apply completion from template';
 $string['action_completion_template_desc'] = 'Pick one selected activity as the template — its completion settings are applied to all other selected activities.';
 $string['action_completion_template_pick'] = 'Pick template';
+
+$string['action_availability_template'] = 'Apply availability from template';
+$string['action_availability_template_desc'] = 'Pick one selected activity as the template — its restrict-access conditions are applied to all other selected activities.';
+$string['availability_summary_none'] = 'No restrictions';
+$string['availability_summary_set'] = 'Restrictions set';
+$string['availability_summary_count'] = '{$a->count} condition(s), joined with {$a->op}';
+$string['reason_availability_template_match'] = 'All target activities already have the same availability conditions as the template.';
 $string['error_completion_needs_two'] = 'Select at least two activities (one template + targets).';
 
 $string['reason_move_already_there'] = 'All selected activities are already in the target section.';
@@ -134,5 +141,5 @@ $string['tour_step3_title'] = 'Mark activities';
 $string['tour_step3_content'] = 'Tick the box next to an activity to select it. Multiple activities can be selected at once.';
 $string['tour_step4_title'] = 'Mark sections';
 $string['tour_step4_content'] = 'Whole sections can be selected too — visibility and dates then apply to all activities inside.';
-$string['tour_step5_title'] = 'Five actions';
-$string['tour_step5_content'] = '<ul><li><b>Visibility:</b> show, hide, or stealth</li><li><b>Shift dates:</b> pick a target date and time</li><li><b>Duplicate section:</b> with all its content</li><li><b>Move to section:</b> move activities between sections</li><li><b>Apply completion from template:</b> copy completion settings of one selected activity to all the others</li></ul>Each action shows a preview before applying.';
+$string['tour_step5_title'] = 'Six actions';
+$string['tour_step5_content'] = '<ul><li><b>Visibility:</b> show, hide, or stealth</li><li><b>Shift dates:</b> pick a target date and time</li><li><b>Duplicate section:</b> with all its content</li><li><b>Move to section:</b> move activities between sections</li><li><b>Apply completion from template:</b> copy completion settings of one selected activity to all the others</li><li><b>Apply availability from template:</b> copy restrict-access conditions of one selected activity to all the others</li></ul>Each action shows a preview before applying.';

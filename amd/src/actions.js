@@ -88,7 +88,7 @@ export const init = (cfg) => {
 const openActionDialog = async(actionId) => {
     currentActionId = actionId;
 
-    if (['visibility', 'dateshift', 'move', 'completion_template'].includes(actionId) && !hasSelection()) {
+    if (['visibility', 'dateshift', 'move', 'completion_template', 'availability_template'].includes(actionId) && !hasSelection()) {
         const msg = await getString('error_noselection', 'local_quickactions');
         await Notification.alert(msg, msg);
         return;
@@ -144,6 +144,34 @@ const openActionDialog = async(actionId) => {
             data = {candidates};
             break;
         }
+        case 'availability_template': {
+            // Combine direct cmids and cmids inside selected sections (DOM-walk).
+            const allCmids = new Set(getSelectedCmids());
+            getSelectedSectionIds().forEach((sid) => {
+                document.querySelectorAll(
+                    `[data-for="section"][data-id="${sid}"] [data-for="cmitem"][data-id]`
+                ).forEach((cmEl) => {
+                    const cmid = parseInt(cmEl.dataset.id, 10);
+                    if (cmid) {
+                        allCmids.add(cmid);
+                    }
+                });
+            });
+            if (allCmids.size < 2) {
+                const msg = await getString('error_completion_needs_two', 'local_quickactions');
+                Notification.addNotification({message: msg, type: 'error'});
+                return;
+            }
+            const candidates = Array.from(allCmids).map((cmid) => {
+                const el = document.querySelector(`[data-for="cmitem"][data-id="${cmid}"]`);
+                const name = el?.querySelector('.activity-item .instancename, .activity-item a')?.textContent?.trim()
+                    || `cm ${cmid}`;
+                return {cmid: cmid, label: name};
+            });
+            template = 'local_quickactions/dialog_availability_template';
+            data = {candidates};
+            break;
+        }
         default:
             return;
     }
@@ -195,6 +223,11 @@ const collectActionParams = () => {
         case 'completion_template': {
             return {
                 templatecmid: parseInt(document.getElementById('qa-completion-template-cm').value, 10) || 0,
+            };
+        }
+        case 'availability_template': {
+            return {
+                templatecmid: parseInt(document.getElementById('qa-availability-template-cm').value, 10) || 0,
             };
         }
         default:
