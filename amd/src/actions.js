@@ -129,6 +129,11 @@ const openActionDialog = async(actionId) => {
                     }
                 });
             });
+            if (allCmids.size < 2) {
+                const msg = await getString('error_completion_needs_two', 'local_quickactions');
+                Notification.addNotification({message: msg, type: 'error'});
+                return;
+            }
             const candidates = Array.from(allCmids).map((cmid) => {
                 const el = document.querySelector(`[data-for="cmitem"][data-id="${cmid}"]`);
                 const name = el?.querySelector('.activity-item .instancename, .activity-item a')?.textContent?.trim()
