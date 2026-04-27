@@ -49,7 +49,7 @@ $string['panel_subtitle_count'] = 'Ausgewählt: {$a}';
 $string['panel_close'] = 'Schließen';
 $string['panel_clear'] = 'Auswahl aufheben';
 $string['panel_selectall'] = 'Alle auswählen';
-$string['panel_lasso_hint'] = 'Tipp: Shift gedrückt halten und ziehen für Lasso-Auswahl';
+$string['panel_lasso_hint'] = 'Lasso aktiv: Shift halten und Rechteck ziehen';
 
 $string['action_visibility'] = 'Sichtbarkeit umschalten';
 $string['action_visibility_desc'] = 'Ausgewählte Aktivitäten anzeigen oder verstecken.';

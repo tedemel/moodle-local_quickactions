@@ -49,6 +49,7 @@ export const init = (config) => {
     const panel = root.querySelector(SELECTORS.panel);
 
     root.classList.add(`qa-pos-${config.fabPosition || 'bottom-right'}`);
+    root.classList.add(`qa-mode-${config.selectionMode || 'checkboxes'}`);
 
     fab.addEventListener('click', () => {
         const wasOpen = panelOpen;

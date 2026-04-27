@@ -49,7 +49,7 @@ $string['panel_subtitle_count'] = 'Selected: {$a}';
 $string['panel_close'] = 'Close';
 $string['panel_clear'] = 'Clear selection';
 $string['panel_selectall'] = 'Select all';
-$string['panel_lasso_hint'] = 'Tip: hold Shift and drag to lasso-select';
+$string['panel_lasso_hint'] = 'Lasso active: hold Shift and drag a rectangle';
 
 $string['action_visibility'] = 'Toggle visibility';
 $string['action_visibility_desc'] = 'Show or hide selected activities.';
