@@ -106,7 +106,7 @@ $string['error_invalidcourse'] = 'Ungültiger Kurskontext.';
 $string['error_permissiondenied'] = 'Sie haben keine Berechtigung für diese Aktion.';
 $string['error_invalidcm'] = 'Ein oder mehrere ausgewählte Elemente sind ungültig.';
 $string['error_invalidsection'] = 'Ungültige Sektion.';
-$string['error_dateshift_zero'] = 'Verschiebungsbetrag muss mindestens 1 sein.';
+$string['error_dateshift_zero'] = 'Bitte ein Zieldatum wählen.';
 $string['error_actionnotfound'] = 'Unbekannte Aktion.';
 
 $string['quickactions:use'] = 'Quick-Actions-Panel verwenden';

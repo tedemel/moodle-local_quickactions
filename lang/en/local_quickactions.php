@@ -106,7 +106,7 @@ $string['error_invalidcourse'] = 'Invalid course context.';
 $string['error_permissiondenied'] = 'You do not have permission to perform this action.';
 $string['error_invalidcm'] = 'One or more selected items are invalid.';
 $string['error_invalidsection'] = 'Invalid section.';
-$string['error_dateshift_zero'] = 'Shift amount must be at least 1.';
+$string['error_dateshift_zero'] = 'Please pick a target date.';
 $string['error_actionnotfound'] = 'Unknown action.';
 
 $string['quickactions:use'] = 'Use the Quick Actions panel';

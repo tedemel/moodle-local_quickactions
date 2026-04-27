@@ -203,6 +203,17 @@ const runPreview = async() => {
     if (currentActionId !== 'section_duplicate') {
         params.sectionids = getSelectedSectionIds();
     }
+    // Per-action client-side validation so users see inline errors instead of a backend exception.
+    if (currentActionId === 'dateshift' && !params.targetdate) {
+        const msg = await getString('error_dateshift_zero', 'local_quickactions');
+        const targetinput = document.getElementById('qa-dateshift-target');
+        if (targetinput) {
+            targetinput.classList.add('is-invalid');
+            targetinput.focus();
+        }
+        Notification.addNotification({message: msg, type: 'error'});
+        return;
+    }
     pendingParams = params;
 
     try {
