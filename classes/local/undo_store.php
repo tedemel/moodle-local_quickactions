@@ -62,7 +62,9 @@ class undo_store {
         $DB->delete_records('local_quickactions_undo', ['id' => $undoid]);
     }
 
-    /** Delete records older than TTL. */
+    /**
+     * Delete records older than TTL.
+     */
     public static function expire_old(): void {
         global $DB;
         $DB->delete_records_select(

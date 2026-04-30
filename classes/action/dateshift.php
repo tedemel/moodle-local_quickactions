@@ -215,7 +215,10 @@ class dateshift implements action_interface {
             'choice' => ['timeopen', 'timeclose'],
             'workshop' => ['submissionstart', 'submissionend', 'assessmentstart', 'assessmentend'],
             'feedback' => ['timeopen', 'timeclose'],
-            'data'   => ['timeavailablefrom', 'timeavailableto', 'timeviewfrom', 'timeviewto', 'assesstimestart', 'assesstimefinish'],
+            'data'   => [
+                'timeavailablefrom', 'timeavailableto', 'timeviewfrom',
+                'timeviewto', 'assesstimestart', 'assesstimefinish',
+            ],
             'scorm'  => ['timeopen', 'timeclose'],
             'chat'   => ['chattime'],
         ];

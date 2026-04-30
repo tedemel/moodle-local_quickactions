@@ -29,6 +29,8 @@ namespace local_quickactions\action;
  */
 class registry {
     /**
+     * Return all registered action classes keyed by their action id.
+     *
      * @return array<string, class-string<action_interface>>
      */
     public static function get_all(): array {
@@ -43,6 +45,8 @@ class registry {
     }
 
     /**
+     * Resolve an action id to its class name, or null when unknown.
+     *
      * @param string $id
      * @return class-string<action_interface>|null
      */
@@ -57,7 +61,6 @@ class registry {
     public static function get_metadata_for_context(\context_course $context): array {
         $items = [];
         foreach (self::get_all() as $id => $cls) {
-            /** @var class-string<action_interface> $cls */
             $cap = $cls::get_required_capability();
             if (!has_capability($cap, $context)) {
                 continue;

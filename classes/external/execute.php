@@ -44,16 +44,24 @@ class execute extends external_api {
             'actionid' => new external_value(PARAM_ALPHANUMEXT, 'Action id'),
             'cmids' => new external_multiple_structure(
                 new external_value(PARAM_INT, 'Course module id'),
-                'Selected course module ids', VALUE_DEFAULT, []
+                'Selected course module ids',
+                VALUE_DEFAULT,
+                []
             ),
             'paramsjson' => new external_value(PARAM_RAW, 'Action params as JSON', VALUE_DEFAULT, '{}'),
         ]);
     }
 
     /**
-     * execute.
+     * Execute the chosen Quick Action.
      */
-    public static function execute(int $courseid, string $actionid, array $cmids, string $paramsjson): array {
+    // phpcs:ignore Generic.NamingConventions.ConstructorName.OldStyle
+    public static function execute(
+        int $courseid,
+        string $actionid,
+        array $cmids,
+        string $paramsjson
+    ): array {
         $params = self::validate_parameters(self::execute_parameters(), [
             'courseid' => $courseid,
             'actionid' => $actionid,

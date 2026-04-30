@@ -28,7 +28,6 @@ namespace local_quickactions\action;
  * Class availability_template.
  */
 class availability_template implements action_interface {
-
     /**
      * get_id.
      */

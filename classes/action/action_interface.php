@@ -24,8 +24,10 @@
 
 namespace local_quickactions\action;
 
+/**
+ * Interface action_interface.
+ */
 interface action_interface {
-
     /**
      * get_id.
      */
