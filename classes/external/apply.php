@@ -32,9 +32,9 @@ use core_external\external_value;
 use local_quickactions\event\action_executed;
 
 /**
- * Class execute.
+ * Class apply.
  */
-class execute extends external_api {
+class apply extends external_api {
     /**
      * execute_parameters.
      */
@@ -55,7 +55,6 @@ class execute extends external_api {
     /**
      * Execute the chosen Quick Action.
      *
-     * phpcs:ignore Generic.NamingConventions.ConstructorName.OldStyle
      */
     public static function execute(
         int $courseid,

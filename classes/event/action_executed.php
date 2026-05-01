@@ -24,8 +24,6 @@
 
 namespace local_quickactions\event;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Class action_executed.
  */

@@ -42,7 +42,7 @@ $functions = [
     ],
 
     'local_quickactions_execute' => [
-        'classname'     => 'local_quickactions\external\execute',
+        'classname'     => 'local_quickactions\external\apply',
         'description'   => 'Execute a Quick Action on selected course module ids.',
         'type'          => 'write',
         'ajax'          => true,

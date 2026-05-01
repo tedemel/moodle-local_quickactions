@@ -22,7 +22,5 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 // All extension points are wired up via classes/hook/callbacks.php
 // and registered in db/hooks.php. This file is intentionally minimal.
