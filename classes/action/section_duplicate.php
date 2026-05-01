@@ -100,6 +100,8 @@ class section_duplicate implements action_interface {
     }
 
     /**
+     * Duplicate the chosen section and all its modules.
+     *
      * @todo Verify duplicate_module() and move_section_to() availability in Moodle 5.x.
      *       If API drift occurs, fall back to backup/restore mechanism.
      */

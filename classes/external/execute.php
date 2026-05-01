@@ -54,8 +54,9 @@ class execute extends external_api {
 
     /**
      * Execute the chosen Quick Action.
+     *
+     * phpcs:ignore Generic.NamingConventions.ConstructorName.OldStyle
      */
-    // phpcs:ignore Generic.NamingConventions.ConstructorName.OldStyle
     public static function execute(
         int $courseid,
         string $actionid,
