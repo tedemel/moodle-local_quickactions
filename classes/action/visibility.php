@@ -65,6 +65,11 @@ class visibility implements action_interface {
 
     /**
      * validate.
+     *
+     * @param array $params
+     * @param array $cmids
+     * @param int $courseid
+     * @param \context_course $context
      */
     public static function validate(array $params, array $cmids, int $courseid, \context_course $context): void {
         $mode = $params['mode'] ?? '';
@@ -79,6 +84,12 @@ class visibility implements action_interface {
 
     /**
      * preview.
+     *
+     * @param array $params
+     * @param array $cmids
+     * @param int $courseid
+     * @param \context_course $context
+     * @return array
      */
     public static function preview(array $params, array $cmids, int $courseid, \context_course $context): array {
         $mode = $params['mode'];
@@ -108,6 +119,12 @@ class visibility implements action_interface {
 
     /**
      * execute.
+     *
+     * @param array $params
+     * @param array $cmids
+     * @param int $courseid
+     * @param \context_course $context
+     * @return array
      */
     public static function execute(array $params, array $cmids, int $courseid, \context_course $context): array {
         global $CFG, $DB, $USER;
@@ -201,6 +218,10 @@ class visibility implements action_interface {
 
     /**
      * format_state.
+     *
+     * @param int $visible
+     * @param int $oncoursepage
+     * @return string
      */
     private static function format_state(int $visible, int $oncoursepage): string {
         if (!$visible) {

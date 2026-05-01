@@ -30,6 +30,8 @@ namespace local_quickactions\hook;
 class callbacks {
     /**
      * before_standard_top_of_body_html.
+     *
+     * @param \core\hook\output\before_standard_top_of_body_html_generation $hook
      */
     public static function before_standard_top_of_body_html(
         \core\hook\output\before_standard_top_of_body_html_generation $hook

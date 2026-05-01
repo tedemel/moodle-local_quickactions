@@ -31,7 +31,9 @@ class undo_runner {
     /**
      * Restore the snapshot identified by $undoid in the given course context.
      *
-     * @return array ['restored' => int]
+     * @param int $undoid
+     * @param \context_course $context
+     * @return array
      */
     public static function restore(int $undoid, \context_course $context): array {
         global $USER, $CFG;
@@ -93,6 +95,10 @@ class undo_runner {
 
     /**
      * restore_visibility.
+     *
+     * @param array $snapshot
+     * @param int $courseid
+     * @return int
      */
     private static function restore_visibility(array $snapshot, int $courseid): int {
         $count = 0;
@@ -125,6 +131,10 @@ class undo_runner {
 
     /**
      * restore_dateshift.
+     *
+     * @param array $snapshot
+     * @param int $courseid
+     * @return int
      */
     private static function restore_dateshift(array $snapshot, int $courseid): int {
         global $DB;
@@ -148,6 +158,10 @@ class undo_runner {
 
     /**
      * Undo section_duplicate: delete the section that was created.
+     *
+     * @param array $snapshot
+     * @param int $courseid
+     * @return int
      */
     private static function restore_section_duplicate(array $snapshot, int $courseid): int {
         global $CFG, $DB;
@@ -176,6 +190,10 @@ class undo_runner {
 
     /**
      * Undo completion_template: restore prior completion fields per cm.
+     *
+     * @param array $snapshot
+     * @param int $courseid
+     * @return int
      */
     private static function restore_completion_template(array $snapshot, int $courseid): int {
         global $DB;
@@ -199,6 +217,10 @@ class undo_runner {
 
     /**
      * Undo move: move each cm back to its original section.
+     *
+     * @param array $snapshot
+     * @param int $courseid
+     * @return int
      */
     private static function restore_move(array $snapshot, int $courseid): int {
         global $CFG, $DB;
@@ -226,6 +248,10 @@ class undo_runner {
 
     /**
      * Undo availability_template: restore prior availability JSON per cm.
+     *
+     * @param array $snapshot
+     * @param int $courseid
+     * @return int
      */
     private static function restore_availability_template(array $snapshot, int $courseid): int {
         global $DB;

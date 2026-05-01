@@ -70,7 +70,7 @@ final class dateshift_test extends \advanced_testcase {
             'duedate' => $duedate,
         ]);
 
-        $target = strtotime('2026-06-08 12:00'); // +7 days.
+        $target = strtotime('2026-06-08 12:00'); // Plus 7 days.
         $result = dateshift::execute(
             ['targetdate' => $target],
             [$assign->cmid],
@@ -100,7 +100,7 @@ final class dateshift_test extends \advanced_testcase {
             'timeclose' => $timeclose,
         ]);
 
-        $target = strtotime('2026-07-01 09:00'); // earliest moves here.
+        $target = strtotime('2026-07-01 09:00'); // Earliest date moves here.
         dateshift::execute(
             ['targetdate' => $target],
             [$quiz->cmid],

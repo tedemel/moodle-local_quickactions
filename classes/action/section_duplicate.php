@@ -65,6 +65,11 @@ class section_duplicate implements action_interface {
 
     /**
      * validate.
+     *
+     * @param array $params
+     * @param array $cmids
+     * @param int $courseid
+     * @param \context_course $context
      */
     public static function validate(array $params, array $cmids, int $courseid, \context_course $context): void {
         $sectionid = (int)($params['sectionid'] ?? 0);
@@ -79,6 +84,12 @@ class section_duplicate implements action_interface {
 
     /**
      * preview.
+     *
+     * @param array $params
+     * @param array $cmids
+     * @param int $courseid
+     * @param \context_course $context
+     * @return array
      */
     public static function preview(array $params, array $cmids, int $courseid, \context_course $context): array {
         global $DB;
@@ -101,9 +112,13 @@ class section_duplicate implements action_interface {
 
     /**
      * Duplicate the chosen section and all its modules.
+     * If API drift occurs, fall back to backup/restore mechanism.
      *
-     * @todo Verify duplicate_module() and move_section_to() availability in Moodle 5.x.
-     *       If API drift occurs, fall back to backup/restore mechanism.
+     * @param array $params
+     * @param array $cmids
+     * @param int $courseid
+     * @param \context_course $context
+     * @return array
      */
     public static function execute(array $params, array $cmids, int $courseid, \context_course $context): array {
         global $CFG, $DB, $USER;

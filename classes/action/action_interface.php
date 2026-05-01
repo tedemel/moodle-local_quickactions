@@ -55,19 +55,35 @@ interface action_interface {
 
     /**
      * validate.
+     *
+     * @param array $params
+     * @param array $cmids
+     * @param int $courseid
+     * @param \context_course $context
      */
     public static function validate(array $params, array $cmids, int $courseid, \context_course $context): void;
 
     /**
      * Build a preview of what the action would do.
-     *
      * Returns a flat list of rows OR an array with keys
      * 'rows', 'applicable' (bool), 'reason' (string).
+     *
+     * @param array $params
+     * @param array $cmids
+     * @param int $courseid
+     * @param \context_course $context
+     * @return array
      */
     public static function preview(array $params, array $cmids, int $courseid, \context_course $context): array;
 
     /**
      * execute.
+     *
+     * @param array $params
+     * @param array $cmids
+     * @param int $courseid
+     * @param \context_course $context
+     * @return array
      */
     public static function execute(array $params, array $cmids, int $courseid, \context_course $context): array;
 }

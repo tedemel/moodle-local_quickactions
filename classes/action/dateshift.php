@@ -65,6 +65,11 @@ class dateshift implements action_interface {
 
     /**
      * validate.
+     *
+     * @param array $params
+     * @param array $cmids
+     * @param int $courseid
+     * @param \context_course $context
      */
     public static function validate(array $params, array $cmids, int $courseid, \context_course $context): void {
         $sectionids = $params['sectionids'] ?? [];
@@ -79,6 +84,12 @@ class dateshift implements action_interface {
 
     /**
      * preview.
+     *
+     * @param array $params
+     * @param array $cmids
+     * @param int $courseid
+     * @param \context_course $context
+     * @return array
      */
     public static function preview(array $params, array $cmids, int $courseid, \context_course $context): array {
         $cmids = self::expand_with_sections($cmids, $params['sectionids'] ?? [], $courseid);
@@ -125,6 +136,12 @@ class dateshift implements action_interface {
 
     /**
      * execute.
+     *
+     * @param array $params
+     * @param array $cmids
+     * @param int $courseid
+     * @param \context_course $context
+     * @return array
      */
     public static function execute(array $params, array $cmids, int $courseid, \context_course $context): array {
         global $DB, $USER;
@@ -202,7 +219,9 @@ class dateshift implements action_interface {
     /**
      * Get all known date fields for a given module type and instance.
      *
-     * @return array<string,int>
+     * @param string $modname
+     * @param int $instanceid
+     * @return array
      */
     private static function get_date_fields_for_module(string $modname, int $instanceid): array {
         global $DB;
@@ -244,6 +263,11 @@ class dateshift implements action_interface {
     /**
      * Compute delta seconds: target date minus the earliest existing date across all selected CMs.
      * If no existing dates, delta = target - now.
+     *
+     * @param array $params
+     * @param array $cmids
+     * @param int $courseid
+     * @return int
      */
     private static function compute_delta_seconds(array $params, array $cmids, int $courseid): int {
         $target = (int)$params['targetdate'];
@@ -256,6 +280,10 @@ class dateshift implements action_interface {
 
     /**
      * find_earliest_date.
+     *
+     * @param array $cmids
+     * @param int $courseid
+     * @return int
      */
     private static function find_earliest_date(array $cmids, int $courseid): int {
         $modinfo = get_fast_modinfo($courseid);
@@ -277,6 +305,11 @@ class dateshift implements action_interface {
 
     /**
      * Expand selected sections into their child cmids, merge with explicit cmids.
+     *
+     * @param array $cmids
+     * @param array $sectionids
+     * @param int $courseid
+     * @return array
      */
     public static function expand_with_sections(array $cmids, array $sectionids, int $courseid): array {
         if (empty($sectionids)) {

@@ -30,6 +30,9 @@ namespace local_quickactions\local;
 class capability_helper {
     /**
      * can_use.
+     *
+     * @param int $courseid
+     * @return bool
      */
     public static function can_use(int $courseid): bool {
         $context = \context_course::instance($courseid);
@@ -38,6 +41,9 @@ class capability_helper {
 
     /**
      * can_bulk_update.
+     *
+     * @param int $courseid
+     * @return bool
      */
     public static function can_bulk_update(int $courseid): bool {
         $context = \context_course::instance($courseid);
@@ -46,6 +52,9 @@ class capability_helper {
 
     /**
      * can_duplicate_section.
+     *
+     * @param int $courseid
+     * @return bool
      */
     public static function can_duplicate_section(int $courseid): bool {
         $context = \context_course::instance($courseid);

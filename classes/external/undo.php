@@ -45,6 +45,10 @@ class undo extends external_api {
 
     /**
      * execute.
+     *
+     * @param int $courseid
+     * @param int $undoid
+     * @return array
      */
     public static function execute(int $courseid, int $undoid): array {
         $params = self::validate_parameters(self::execute_parameters(), [

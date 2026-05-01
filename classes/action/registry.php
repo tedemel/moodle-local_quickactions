@@ -57,6 +57,9 @@ class registry {
 
     /**
      * get_metadata_for_context.
+     *
+     * @param \context_course $context
+     * @return array
      */
     public static function get_metadata_for_context(\context_course $context): array {
         $items = [];

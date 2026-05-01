@@ -30,6 +30,9 @@ namespace local_quickactions\output;
 class renderer extends \plugin_renderer_base {
     /**
      * render_fab_and_panel.
+     *
+     * @param int $courseid
+     * @return string
      */
     public function render_fab_and_panel(int $courseid): string {
         $context = \context_course::instance($courseid);

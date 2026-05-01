@@ -24,6 +24,8 @@
 
 /**
  * xmldb_local_quickactions_upgrade.
+ *
+ * @param mixed $oldversion
  */
 function xmldb_local_quickactions_upgrade($oldversion) {
     global $DB;

@@ -53,6 +53,12 @@ class preview extends external_api {
 
     /**
      * execute.
+     *
+     * @param int $courseid
+     * @param string $actionid
+     * @param array $cmids
+     * @param string $paramsjson
+     * @return array
      */
     public static function execute(int $courseid, string $actionid, array $cmids, string $paramsjson): array {
         $params = self::validate_parameters(self::execute_parameters(), [

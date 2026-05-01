@@ -55,6 +55,11 @@ class apply extends external_api {
     /**
      * Execute the chosen Quick Action.
      *
+     * @param int $courseid
+     * @param string $actionid
+     * @param array $cmids
+     * @param string $paramsjson
+     * @return array
      */
     public static function execute(
         int $courseid,

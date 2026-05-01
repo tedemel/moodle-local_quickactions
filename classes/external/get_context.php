@@ -45,6 +45,9 @@ class get_context extends external_api {
 
     /**
      * execute.
+     *
+     * @param int $courseid
+     * @return array
      */
     public static function execute(int $courseid): array {
         $params = self::validate_parameters(self::execute_parameters(), ['courseid' => $courseid]);
