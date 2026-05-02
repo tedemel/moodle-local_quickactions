@@ -7,11 +7,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Quick Actions main entry point.
@@ -62,7 +62,7 @@ export const init = (cfg) => {
     showUndoNotificationIfPending(config);
 };
 
-const showUndoNotificationIfPending = async (config) => {
+const showUndoNotificationIfPending = async(config) => {
     let raw;
     try {
         raw = sessionStorage.getItem(UNDO_STORAGE_KEY);
@@ -89,16 +89,18 @@ const showUndoNotificationIfPending = async (config) => {
     sessionStorage.removeItem(UNDO_STORAGE_KEY);
 
     const label = await getString('undo_button', 'local_quickactions');
+    const successCount = data.successcount ?? 0;
+    const headline = await getString('result_success', 'local_quickactions', successCount);
     const id = 'local-quickactions-undo-toast';
     document.getElementById(id)?.remove();
     const el = document.createElement('div');
     el.id = id;
     el.className = 'alert alert-info local-quickactions-undo-toast';
-    el.innerHTML = `<span class="me-2">${escapeHtml(await getString('result_success', 'local_quickactions', '?'))}</span>`
+    el.innerHTML = `<span class="me-2">${escapeHtml(headline)}</span>`
         + `<button type="button" class="btn btn-sm btn-outline-primary">${escapeHtml(label)}</button>`;
     document.body.appendChild(el);
 
-    el.querySelector('button').addEventListener('click', async () => {
+    el.querySelector('button').addEventListener('click', async() => {
         try {
             const result = await Ajax.call([{
                 methodname: 'local_quickactions_undo',

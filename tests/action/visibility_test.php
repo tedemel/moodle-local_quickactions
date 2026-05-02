@@ -8,11 +8,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Unit tests for visibility action.
@@ -25,10 +25,14 @@
 namespace local_quickactions\action;
 
 /**
+ * Tests for visibility_test.
+ *
  * @covers \local_quickactions\action\visibility
  */
 final class visibility_test extends \advanced_testcase {
-
+    /**
+     * test_validate_throws_on_no_selection.
+     */
     public function test_validate_throws_on_no_selection(): void {
         $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course();
@@ -38,6 +42,9 @@ final class visibility_test extends \advanced_testcase {
         visibility::validate(['mode' => 'show'], [], $course->id, $context);
     }
 
+    /**
+     * test_validate_throws_on_invalid_mode.
+     */
     public function test_validate_throws_on_invalid_mode(): void {
         $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course();
@@ -47,6 +54,9 @@ final class visibility_test extends \advanced_testcase {
         visibility::validate(['mode' => 'invalid'], [1, 2], $course->id, $context);
     }
 
+    /**
+     * test_execute_hides_modules.
+     */
     public function test_execute_hides_modules(): void {
         global $DB;
         $this->resetAfterTest();
@@ -62,6 +72,9 @@ final class visibility_test extends \advanced_testcase {
         $this->assertEquals(0, $DB->get_field('course_modules', 'visible', ['id' => $assign->cmid]));
     }
 
+    /**
+     * test_execute_shows_modules.
+     */
     public function test_execute_shows_modules(): void {
         global $DB;
         $this->resetAfterTest();

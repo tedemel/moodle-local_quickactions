@@ -3,12 +3,36 @@
 
     Floating action button + bottom-sheet panel container.
 
-    Context:
-    * courseid - int
-    * fabAria, fabLabel - strings
-    * panelTitle, subtitleNone - strings
-    * closeStr, clearStr, selectAllStr, lassoHint - strings
-    * actions - array of {id, name, description, icon}
+    @copyright 2026 Tessa Demel
+    @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+    Context variables required for this template:
+    * courseid int Course id.
+    * fabAria string Aria label for the FAB button.
+    * fabLabel string Visible label on the FAB button.
+    * panelTitle string Bottom-sheet title.
+    * subtitleNone string Subtitle shown when no item is selected.
+    * closeStr string Close button label.
+    * clearStr string "Clear selection" toolbar label.
+    * selectAllStr string "Select all" toolbar label.
+    * lassoHint string Hint text describing lasso usage.
+    * actions array List of action descriptors (id, name, description, icon).
+
+    Example context (json):
+    {
+        "courseid": 2,
+        "fabAria": "Open Quick Actions panel",
+        "fabLabel": "Quick Actions",
+        "panelTitle": "Quick Actions",
+        "subtitleNone": "Select activities to act on",
+        "closeStr": "Close",
+        "clearStr": "Clear selection",
+        "selectAllStr": "Select all",
+        "lassoHint": "Hold Shift and drag to lasso-select",
+        "actions": [
+            {"id": "visibility", "name": "Toggle visibility", "description": "Show or hide", "icon": "eye"}
+        ]
+    }
 }}
 <div id="local-quickactions-root"
      class="local-quickactions-root"
@@ -64,7 +88,10 @@
                 <i class="fa fa-eraser" aria-hidden="true"></i>
                 {{clearStr}}
             </button>
-            <span class="local-quickactions-lasso-hint">{{lassoHint}}</span>
+            <span class="local-quickactions-lasso-hint">
+                <i class="fa fa-mouse-pointer" aria-hidden="true"></i>
+                {{lassoHint}}
+            </span>
         </div>
 
         <div class="local-quickactions-actions-grid">

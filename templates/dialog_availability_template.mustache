@@ -1,7 +1,8 @@
 {{!
-    @template local_quickactions/dialog_completion_template
+    @template local_quickactions/dialog_availability_template
 
-    Completion-template action dialog (pick template CM).
+    Availability-template action dialog (pick template CM whose
+    restrict-access conditions are copied to others).
 
     @copyright 2026 Tessa Demel
     @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -18,12 +19,12 @@
     }
 }}
 <div class="local-quickactions-dialog">
-    <h4 class="h6">{{#str}}action_completion_template, local_quickactions{{/str}}</h4>
-    <p class="text-muted">{{#str}}action_completion_template_desc, local_quickactions{{/str}}</p>
+    <h4 class="h6">{{#str}}action_availability_template, local_quickactions{{/str}}</h4>
+    <p class="text-muted">{{#str}}action_availability_template_desc, local_quickactions{{/str}}</p>
 
     <div class="mb-3">
-        <label for="qa-completion-template-cm" class="form-label">{{#str}}action_completion_template_pick, local_quickactions{{/str}}</label>
-        <select id="qa-completion-template-cm" class="form-select">
+        <label for="qa-availability-template-cm" class="form-label">{{#str}}action_completion_template_pick, local_quickactions{{/str}}</label>
+        <select id="qa-availability-template-cm" class="form-select">
             {{#candidates}}
                 <option value="{{cmid}}">{{label}}</option>
             {{/candidates}}

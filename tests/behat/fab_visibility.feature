@@ -27,6 +27,7 @@ Feature: Quick Actions FAB appears in course edit mode
     And I am on "Test course" course homepage with editing mode on
     Then "[data-region=\"qa-fab\"]" "css_element" should exist
 
+  @javascript
   Scenario: Clicking FAB opens the panel
     Given I log in as "teacher1"
     And I am on "Test course" course homepage with editing mode on

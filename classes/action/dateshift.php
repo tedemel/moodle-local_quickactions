@@ -8,11 +8,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Dateshift Quick Action.
@@ -24,28 +24,53 @@
 
 namespace local_quickactions\action;
 
+/**
+ * Class dateshift.
+ */
 class dateshift implements action_interface {
-
+    /**
+     * get_id.
+     */
     public static function get_id(): string {
         return 'dateshift';
     }
 
+    /**
+     * get_name.
+     */
     public static function get_name(): string {
         return get_string('action_dateshift', 'local_quickactions');
     }
 
+    /**
+     * get_description.
+     */
     public static function get_description(): string {
         return get_string('action_dateshift_desc', 'local_quickactions');
     }
 
+    /**
+     * get_icon.
+     */
     public static function get_icon(): string {
         return 'calendar';
     }
 
+    /**
+     * get_required_capability.
+     */
     public static function get_required_capability(): string {
         return 'local/quickactions:bulkupdate';
     }
 
+    /**
+     * validate.
+     *
+     * @param array $params
+     * @param array $cmids
+     * @param int $courseid
+     * @param \context_course $context
+     */
     public static function validate(array $params, array $cmids, int $courseid, \context_course $context): void {
         $sectionids = $params['sectionids'] ?? [];
         if (empty($cmids) && empty($sectionids)) {
@@ -57,6 +82,15 @@ class dateshift implements action_interface {
         }
     }
 
+    /**
+     * preview.
+     *
+     * @param array $params
+     * @param array $cmids
+     * @param int $courseid
+     * @param \context_course $context
+     * @return array
+     */
     public static function preview(array $params, array $cmids, int $courseid, \context_course $context): array {
         $cmids = self::expand_with_sections($cmids, $params['sectionids'] ?? [], $courseid);
         $delta = self::compute_delta_seconds($params, $cmids, $courseid);
@@ -93,9 +127,22 @@ class dateshift implements action_interface {
                 ];
             }
         }
-        return $rows;
+        return [
+            'rows' => $rows,
+            'applicable' => !empty($rows),
+            'reason' => !empty($rows) ? '' : get_string('reason_dateshift_no_dates', 'local_quickactions'),
+        ];
     }
 
+    /**
+     * execute.
+     *
+     * @param array $params
+     * @param array $cmids
+     * @param int $courseid
+     * @param \context_course $context
+     * @return array
+     */
     public static function execute(array $params, array $cmids, int $courseid, \context_course $context): array {
         global $DB, $USER;
         $cmids = self::expand_with_sections($cmids, $params['sectionids'] ?? [], $courseid);
@@ -159,7 +206,10 @@ class dateshift implements action_interface {
         $undoid = 0;
         if ($success > 0 && !empty($snapshot['records'])) {
             $undoid = \local_quickactions\local\undo_store::record(
-                (int)$USER->id, $courseid, self::get_id(), $snapshot
+                (int)$USER->id,
+                $courseid,
+                self::get_id(),
+                $snapshot
             );
         }
 
@@ -169,7 +219,9 @@ class dateshift implements action_interface {
     /**
      * Get all known date fields for a given module type and instance.
      *
-     * @return array<string,int>
+     * @param string $modname
+     * @param int $instanceid
+     * @return array
      */
     private static function get_date_fields_for_module(string $modname, int $instanceid): array {
         global $DB;
@@ -182,7 +234,10 @@ class dateshift implements action_interface {
             'choice' => ['timeopen', 'timeclose'],
             'workshop' => ['submissionstart', 'submissionend', 'assessmentstart', 'assessmentend'],
             'feedback' => ['timeopen', 'timeclose'],
-            'data'   => ['timeavailablefrom', 'timeavailableto', 'timeviewfrom', 'timeviewto', 'assesstimestart', 'assesstimefinish'],
+            'data'   => [
+                'timeavailablefrom', 'timeavailableto', 'timeviewfrom',
+                'timeviewto', 'assesstimestart', 'assesstimefinish',
+            ],
             'scorm'  => ['timeopen', 'timeclose'],
             'chat'   => ['chattime'],
         ];
@@ -208,6 +263,11 @@ class dateshift implements action_interface {
     /**
      * Compute delta seconds: target date minus the earliest existing date across all selected CMs.
      * If no existing dates, delta = target - now.
+     *
+     * @param array $params
+     * @param array $cmids
+     * @param int $courseid
+     * @return int
      */
     private static function compute_delta_seconds(array $params, array $cmids, int $courseid): int {
         $target = (int)$params['targetdate'];
@@ -218,6 +278,13 @@ class dateshift implements action_interface {
         return $target - time();
     }
 
+    /**
+     * find_earliest_date.
+     *
+     * @param array $cmids
+     * @param int $courseid
+     * @return int
+     */
     private static function find_earliest_date(array $cmids, int $courseid): int {
         $modinfo = get_fast_modinfo($courseid);
         $earliest = 0;
@@ -238,6 +305,11 @@ class dateshift implements action_interface {
 
     /**
      * Expand selected sections into their child cmids, merge with explicit cmids.
+     *
+     * @param array $cmids
+     * @param array $sectionids
+     * @param int $courseid
+     * @return array
      */
     public static function expand_with_sections(array $cmids, array $sectionids, int $courseid): array {
         if (empty($sectionids)) {

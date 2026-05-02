@@ -8,11 +8,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Section duplicate Quick Action.
@@ -24,28 +24,53 @@
 
 namespace local_quickactions\action;
 
+/**
+ * Class section_duplicate.
+ */
 class section_duplicate implements action_interface {
-
+    /**
+     * get_id.
+     */
     public static function get_id(): string {
         return 'section_duplicate';
     }
 
+    /**
+     * get_name.
+     */
     public static function get_name(): string {
         return get_string('action_section_duplicate', 'local_quickactions');
     }
 
+    /**
+     * get_description.
+     */
     public static function get_description(): string {
         return get_string('action_section_duplicate_desc', 'local_quickactions');
     }
 
+    /**
+     * get_icon.
+     */
     public static function get_icon(): string {
         return 'copy';
     }
 
+    /**
+     * get_required_capability.
+     */
     public static function get_required_capability(): string {
         return 'local/quickactions:duplicatesection';
     }
 
+    /**
+     * validate.
+     *
+     * @param array $params
+     * @param array $cmids
+     * @param int $courseid
+     * @param \context_course $context
+     */
     public static function validate(array $params, array $cmids, int $courseid, \context_course $context): void {
         $sectionid = (int)($params['sectionid'] ?? 0);
         if ($sectionid <= 0) {
@@ -57,6 +82,15 @@ class section_duplicate implements action_interface {
         }
     }
 
+    /**
+     * preview.
+     *
+     * @param array $params
+     * @param array $cmids
+     * @param int $courseid
+     * @param \context_course $context
+     * @return array
+     */
     public static function preview(array $params, array $cmids, int $courseid, \context_course $context): array {
         global $DB;
         $sectionid = (int)$params['sectionid'];
@@ -77,8 +111,14 @@ class section_duplicate implements action_interface {
     }
 
     /**
-     * @todo Verify duplicate_module() and move_section_to() availability in Moodle 5.x.
-     *       If API drift occurs, fall back to backup/restore mechanism.
+     * Duplicate the chosen section and all its modules.
+     * If API drift occurs, fall back to backup/restore mechanism.
+     *
+     * @param array $params
+     * @param array $cmids
+     * @param int $courseid
+     * @param \context_course $context
+     * @return array
      */
     public static function execute(array $params, array $cmids, int $courseid, \context_course $context): array {
         global $CFG, $DB, $USER;
@@ -119,7 +159,9 @@ class section_duplicate implements action_interface {
 
             // Snapshot for undo: just the new section id — restore deletes it (and its content).
             $undoid = \local_quickactions\local\undo_store::record(
-                (int)$USER->id, $courseid, self::get_id(),
+                (int)$USER->id,
+                $courseid,
+                self::get_id(),
                 ['newsectionid' => (int)$newsection->id]
             );
 

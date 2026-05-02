@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Action: copy completion settings from a "template" CM to all other selected CMs.
+ * Action: copy availability (restrict-access) settings from a template CM to others.
  *
  * @package    local_quickactions
  * @copyright  2026 Tessa Demel
@@ -25,44 +25,35 @@
 namespace local_quickactions\action;
 
 /**
- * Class completion_template.
+ * Class availability_template.
  */
-class completion_template implements action_interface {
-    /** Fields copied from template CM. */
-    private const COMPLETION_FIELDS = [
-        'completion',
-        'completionview',
-        'completiongradeitemnumber',
-        'completionexpected',
-        'completionpassgrade',
-    ];
-
+class availability_template implements action_interface {
     /**
      * get_id.
      */
     public static function get_id(): string {
-        return 'completion_template';
+        return 'availability_template';
     }
 
     /**
      * get_name.
      */
     public static function get_name(): string {
-        return get_string('action_completion_template', 'local_quickactions');
+        return get_string('action_availability_template', 'local_quickactions');
     }
 
     /**
      * get_description.
      */
     public static function get_description(): string {
-        return get_string('action_completion_template_desc', 'local_quickactions');
+        return get_string('action_availability_template_desc', 'local_quickactions');
     }
 
     /**
      * get_icon.
      */
     public static function get_icon(): string {
-        return 'check-circle-o';
+        return 'lock';
     }
 
     /**
@@ -85,7 +76,6 @@ class completion_template implements action_interface {
         if ($templatecmid <= 0) {
             throw new \moodle_exception('error_invalidcm', 'local_quickactions');
         }
-        // Expand any selected sections to their member cmids so the user can use sections too.
         $expanded = \local_quickactions\action\dateshift::expand_with_sections(
             $cmids,
             $params['sectionids'] ?? [],
@@ -119,19 +109,10 @@ class completion_template implements action_interface {
         $modinfo = get_fast_modinfo($courseid);
         $template = $modinfo->cms[$templatecmid] ?? null;
         if (!$template) {
-            return [];
+            return ['rows' => [], 'applicable' => false, 'reason' => ''];
         }
-        $tplrec = $DB->get_record('course_modules', ['id' => $templatecmid], 'id, ' . implode(', ', self::COMPLETION_FIELDS));
-        $tplsummary = self::summarise($tplrec);
-
-        // If the template itself has completion=none, copying it would clear everyone — flag as not applicable.
-        if ((int)$tplrec->completion === 0) {
-            return [
-                'rows' => [],
-                'applicable' => false,
-                'reason' => get_string('reason_completion_template_none', 'local_quickactions'),
-            ];
-        }
+        $tplavailability = $DB->get_field('course_modules', 'availability', ['id' => $templatecmid]);
+        $tplsummary = self::summarise($tplavailability);
 
         $rows = [];
         $changed = 0;
@@ -143,22 +124,21 @@ class completion_template implements action_interface {
             if (!$cm) {
                 continue;
             }
-            $rec = $DB->get_record('course_modules', ['id' => $cmid], 'id, ' . implode(', ', self::COMPLETION_FIELDS));
-            $beforesum = self::summarise($rec);
-            if ($beforesum !== $tplsummary) {
+            $current = $DB->get_field('course_modules', 'availability', ['id' => $cmid]);
+            if ((string)$current !== (string)$tplavailability) {
                 $changed++;
             }
             $rows[] = [
                 'cmid'   => (int)$cmid,
                 'label'  => format_string($cm->name) . ' (' . $cm->modname . ')',
-                'before' => $beforesum,
+                'before' => self::summarise($current),
                 'after'  => $tplsummary,
             ];
         }
         return [
             'rows' => $rows,
             'applicable' => $changed > 0,
-            'reason' => $changed > 0 ? '' : get_string('reason_completion_template_match', 'local_quickactions'),
+            'reason' => $changed > 0 ? '' : get_string('reason_availability_template_match', 'local_quickactions'),
         ];
     }
 
@@ -179,29 +159,19 @@ class completion_template implements action_interface {
             $courseid
         );
         $templatecmid = (int)$params['templatecmid'];
-        $tplrec = $DB->get_record('course_modules', ['id' => $templatecmid], 'id, ' . implode(', ', self::COMPLETION_FIELDS));
-        if (!$tplrec) {
-            return [
-                'success' => 0,
-                'failed' => 1,
-                'errors' => [['cmid' => $templatecmid, 'message' => 'template missing']],
-                'undoid' => 0,
-            ];
-        }
+        $tplavailability = $DB->get_field('course_modules', 'availability', ['id' => $templatecmid]);
 
-        // Snapshot before changes (skip template — it is unchanged).
+        // Snapshot for undo (skip template — it is unchanged).
         $snapshot = ['records' => []];
         foreach ($cmids as $cmid) {
             if ((int)$cmid === $templatecmid) {
                 continue;
             }
-            $rec = $DB->get_record('course_modules', ['id' => $cmid], 'id, ' . implode(', ', self::COMPLETION_FIELDS));
-            if ($rec) {
-                $snapshot['records'][] = [
-                    'cmid'   => (int)$cmid,
-                    'fields' => array_intersect_key((array)$rec, array_flip(self::COMPLETION_FIELDS)),
-                ];
-            }
+            $current = $DB->get_field('course_modules', 'availability', ['id' => $cmid]);
+            $snapshot['records'][] = [
+                'cmid' => (int)$cmid,
+                'availability' => $current,
+            ];
         }
 
         $success = 0;
@@ -212,11 +182,7 @@ class completion_template implements action_interface {
                 continue;
             }
             try {
-                $update = (object)['id' => (int)$cmid];
-                foreach (self::COMPLETION_FIELDS as $f) {
-                    $update->$f = $tplrec->$f;
-                }
-                $DB->update_record('course_modules', $update);
+                $DB->set_field('course_modules', 'availability', $tplavailability, ['id' => (int)$cmid]);
                 $success++;
             } catch (\Throwable $e) {
                 $failed++;
@@ -239,33 +205,24 @@ class completion_template implements action_interface {
     }
 
     /**
-     * Human-readable summary of completion config for the preview table.
+     * Human-readable summary of an availability JSON for the preview table.
      *
-     * @param mixed $rec
+     * @param string|null $availability
      * @return string
      */
-    private static function summarise($rec): string {
-        if (!$rec) {
-            return '—';
+    private static function summarise(?string $availability): string {
+        if ($availability === null || $availability === '' || $availability === '{}') {
+            return get_string('availability_summary_none', 'local_quickactions');
         }
-        $modes = [
-            0 => get_string('completion_none', 'completion'),
-            1 => get_string('completion_manual', 'completion'),
-            2 => get_string('completion_automatic', 'completion'),
-        ];
-        $parts = [$modes[(int)$rec->completion] ?? (string)$rec->completion];
-        if ((int)$rec->completionview) {
-            $parts[] = 'view';
+        $decoded = json_decode($availability);
+        if (!$decoded || !isset($decoded->c) || !is_array($decoded->c)) {
+            return get_string('availability_summary_set', 'local_quickactions');
         }
-        if (!is_null($rec->completiongradeitemnumber)) {
-            $parts[] = 'grade';
-        }
-        if ((int)$rec->completionpassgrade) {
-            $parts[] = 'passgrade';
-        }
-        if ((int)$rec->completionexpected > 0) {
-            $parts[] = 'expected:' . userdate($rec->completionexpected, '%Y-%m-%d');
-        }
-        return implode(' · ', $parts);
+        $count = count($decoded->c);
+        $op = isset($decoded->op) ? (string)$decoded->op : '&';
+        return get_string('availability_summary_count', 'local_quickactions', (object)[
+            'count' => $count,
+            'op'    => $op === '|' ? 'OR' : 'AND',
+        ]);
     }
 }

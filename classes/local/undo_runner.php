@@ -8,11 +8,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Restore snapshots produced by Quick Actions.
@@ -24,12 +24,16 @@
 
 namespace local_quickactions\local;
 
+/**
+ * Class undo_runner.
+ */
 class undo_runner {
-
     /**
      * Restore the snapshot identified by $undoid in the given course context.
      *
-     * @return array ['restored' => int]
+     * @param int $undoid
+     * @param \context_course $context
+     * @return array
      */
     public static function restore(int $undoid, \context_course $context): array {
         global $USER, $CFG;
@@ -76,6 +80,9 @@ class undo_runner {
             case 'completion_template':
                 $restored = self::restore_completion_template($snapshot, $courseid);
                 break;
+            case 'availability_template':
+                $restored = self::restore_availability_template($snapshot, $courseid);
+                break;
             default:
                 throw new \moodle_exception('error_actionnotfound', 'local_quickactions');
         }
@@ -86,6 +93,13 @@ class undo_runner {
         return ['restored' => $restored];
     }
 
+    /**
+     * restore_visibility.
+     *
+     * @param array $snapshot
+     * @param int $courseid
+     * @return int
+     */
     private static function restore_visibility(array $snapshot, int $courseid): int {
         $count = 0;
         foreach ($snapshot['cms'] ?? [] as $row) {
@@ -115,6 +129,13 @@ class undo_runner {
         return $count;
     }
 
+    /**
+     * restore_dateshift.
+     *
+     * @param array $snapshot
+     * @param int $courseid
+     * @return int
+     */
     private static function restore_dateshift(array $snapshot, int $courseid): int {
         global $DB;
         $count = 0;
@@ -137,6 +158,10 @@ class undo_runner {
 
     /**
      * Undo section_duplicate: delete the section that was created.
+     *
+     * @param array $snapshot
+     * @param int $courseid
+     * @return int
      */
     private static function restore_section_duplicate(array $snapshot, int $courseid): int {
         global $CFG, $DB;
@@ -165,6 +190,10 @@ class undo_runner {
 
     /**
      * Undo completion_template: restore prior completion fields per cm.
+     *
+     * @param array $snapshot
+     * @param int $courseid
+     * @return int
      */
     private static function restore_completion_template(array $snapshot, int $courseid): int {
         global $DB;
@@ -188,6 +217,10 @@ class undo_runner {
 
     /**
      * Undo move: move each cm back to its original section.
+     *
+     * @param array $snapshot
+     * @param int $courseid
+     * @return int
      */
     private static function restore_move(array $snapshot, int $courseid): int {
         global $CFG, $DB;
@@ -210,6 +243,28 @@ class undo_runner {
                 debugging('undo move cm: ' . $e->getMessage(), DEBUG_DEVELOPER);
             }
         }
+        return $count;
+    }
+
+    /**
+     * Undo availability_template: restore prior availability JSON per cm.
+     *
+     * @param array $snapshot
+     * @param int $courseid
+     * @return int
+     */
+    private static function restore_availability_template(array $snapshot, int $courseid): int {
+        global $DB;
+        $count = 0;
+        foreach ($snapshot['records'] ?? [] as $row) {
+            try {
+                $DB->set_field('course_modules', 'availability', $row['availability'], ['id' => (int)$row['cmid']]);
+                $count++;
+            } catch (\Throwable $e) {
+                debugging('undo availability_template cm: ' . $e->getMessage(), DEBUG_DEVELOPER);
+            }
+        }
+        rebuild_course_cache($courseid, true);
         return $count;
     }
 }

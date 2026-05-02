@@ -7,11 +7,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Multi-select for course modules and sections.
@@ -59,7 +59,8 @@ const enableSelection = () => {
     // Lasso only on pointer-fine devices — no touch-drag confusion on mobile.
     const isTouch = window.matchMedia('(pointer: coarse)').matches;
     if (!isTouch && (state.mode === 'lasso' || state.mode === 'both')) {
-        document.addEventListener('mousedown', onLassoStart);
+        // Capture phase so we run before Moodle's per-activity drag handler.
+        document.addEventListener('mousedown', onLassoStart, true);
     }
     document.body.classList.add('local-quickactions-selecting');
 };
@@ -67,7 +68,7 @@ const enableSelection = () => {
 const disableSelection = () => {
     document.querySelectorAll('.local-quickactions-checkbox, .local-quickactions-section-checkbox')
         .forEach((cb) => cb.remove());
-    document.removeEventListener('mousedown', onLassoStart);
+    document.removeEventListener('mousedown', onLassoStart, true);
     state.selectedCms.clear();
     state.selectedSections.clear();
     updateSubtitle();
@@ -142,7 +143,19 @@ const selectAll = () => {
         }
         state.selectedCms.add(cmid);
         el.classList.add('local-quickactions-selected');
-        const cb = el.querySelector(':scope > .local-quickactions-checkbox input');
+        const cb = el.querySelector('.local-quickactions-checkbox input');
+        if (cb) {
+            cb.checked = true;
+        }
+    });
+    document.querySelectorAll(SELECTORS.section).forEach((el) => {
+        const sid = parseInt(el.dataset.id, 10);
+        if (!sid) {
+            return;
+        }
+        state.selectedSections.add(sid);
+        el.classList.add('local-quickactions-selected');
+        const cb = el.querySelector('.local-quickactions-section-checkbox input');
         if (cb) {
             cb.checked = true;
         }
@@ -208,6 +221,7 @@ const onLassoStart = (e) => {
     document.addEventListener('mousemove', onLassoMove);
     document.addEventListener('mouseup', onLassoEnd);
     e.preventDefault();
+    e.stopPropagation();
 };
 
 const onLassoMove = (e) => {

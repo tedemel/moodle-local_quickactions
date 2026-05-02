@@ -7,11 +7,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Action button -> dialog -> preview -> execute flow.
@@ -47,7 +47,7 @@ export const init = (cfg) => {
         return;
     }
 
-    panel.addEventListener('click', async (e) => {
+    panel.addEventListener('click', async(e) => {
         const btn = e.target.closest(SELECTORS.actionBtn);
         if (btn) {
             await openActionDialog(btn.dataset.actionId);
@@ -71,7 +71,7 @@ export const init = (cfg) => {
         }
     });
 
-    document.addEventListener('local_quickactions:panelopened', async () => {
+    document.addEventListener('local_quickactions:panelopened', async() => {
         if (courseContext === null) {
             try {
                 courseContext = await Ajax.call([{
@@ -85,10 +85,10 @@ export const init = (cfg) => {
     });
 };
 
-const openActionDialog = async (actionId) => {
+const openActionDialog = async(actionId) => {
     currentActionId = actionId;
 
-    if (['visibility', 'dateshift', 'move', 'completion_template'].includes(actionId) && !hasSelection()) {
+    if (['visibility', 'dateshift', 'move', 'completion_template', 'availability_template'].includes(actionId) && !hasSelection()) {
         const msg = await getString('error_noselection', 'local_quickactions');
         await Notification.alert(msg, msg);
         return;
@@ -117,14 +117,58 @@ const openActionDialog = async (actionId) => {
             data = {sections: courseContext?.sections || []};
             break;
         case 'completion_template': {
-            // Build candidate list from currently selected cmids; fetch their names from DOM.
-            const candidates = getSelectedCmids().map((cmid) => {
+            // Combine direct cmids and cmids inside selected sections (DOM-walk).
+            const allCmids = new Set(getSelectedCmids());
+            getSelectedSectionIds().forEach((sid) => {
+                document.querySelectorAll(
+                    `[data-for="section"][data-id="${sid}"] [data-for="cmitem"][data-id]`
+                ).forEach((cmEl) => {
+                    const cmid = parseInt(cmEl.dataset.id, 10);
+                    if (cmid) {
+                        allCmids.add(cmid);
+                    }
+                });
+            });
+            if (allCmids.size < 2) {
+                const msg = await getString('error_completion_needs_two', 'local_quickactions');
+                Notification.addNotification({message: msg, type: 'error'});
+                return;
+            }
+            const candidates = Array.from(allCmids).map((cmid) => {
                 const el = document.querySelector(`[data-for="cmitem"][data-id="${cmid}"]`);
                 const name = el?.querySelector('.activity-item .instancename, .activity-item a')?.textContent?.trim()
                     || `cm ${cmid}`;
                 return {cmid: cmid, label: name};
             });
             template = 'local_quickactions/dialog_completion_template';
+            data = {candidates};
+            break;
+        }
+        case 'availability_template': {
+            // Combine direct cmids and cmids inside selected sections (DOM-walk).
+            const allCmids = new Set(getSelectedCmids());
+            getSelectedSectionIds().forEach((sid) => {
+                document.querySelectorAll(
+                    `[data-for="section"][data-id="${sid}"] [data-for="cmitem"][data-id]`
+                ).forEach((cmEl) => {
+                    const cmid = parseInt(cmEl.dataset.id, 10);
+                    if (cmid) {
+                        allCmids.add(cmid);
+                    }
+                });
+            });
+            if (allCmids.size < 2) {
+                const msg = await getString('error_completion_needs_two', 'local_quickactions');
+                Notification.addNotification({message: msg, type: 'error'});
+                return;
+            }
+            const candidates = Array.from(allCmids).map((cmid) => {
+                const el = document.querySelector(`[data-for="cmitem"][data-id="${cmid}"]`);
+                const name = el?.querySelector('.activity-item .instancename, .activity-item a')?.textContent?.trim()
+                    || `cm ${cmid}`;
+                return {cmid: cmid, label: name};
+            });
+            template = 'local_quickactions/dialog_availability_template';
             data = {candidates};
             break;
         }
@@ -161,7 +205,7 @@ const collectActionParams = () => {
         }
         case 'dateshift': {
             const dateStr = document.getElementById('qa-dateshift-target').value;
-            // datetime-local value e.g. "2026-06-01T14:30" — interpreted as local time.
+            // Datetime-local value e.g. "2026-06-01T14:30" — interpreted as local time.
             const target = dateStr ? Math.floor(new Date(dateStr).getTime() / 1000) : 0;
             return {targetdate: target};
         }
@@ -181,16 +225,32 @@ const collectActionParams = () => {
                 templatecmid: parseInt(document.getElementById('qa-completion-template-cm').value, 10) || 0,
             };
         }
+        case 'availability_template': {
+            return {
+                templatecmid: parseInt(document.getElementById('qa-availability-template-cm').value, 10) || 0,
+            };
+        }
         default:
             return {};
     }
 };
 
-const runPreview = async () => {
+const runPreview = async() => {
     const cmids = currentActionId === 'section_duplicate' ? [] : getSelectedCmids();
     const params = collectActionParams();
     if (currentActionId !== 'section_duplicate') {
         params.sectionids = getSelectedSectionIds();
+    }
+    // Per-action client-side validation so users see inline errors instead of a backend exception.
+    if (currentActionId === 'dateshift' && !params.targetdate) {
+        const msg = await getString('error_dateshift_zero', 'local_quickactions');
+        const targetinput = document.getElementById('qa-dateshift-target');
+        if (targetinput) {
+            targetinput.classList.add('is-invalid');
+            targetinput.focus();
+        }
+        Notification.addNotification({message: msg, type: 'error'});
+        return;
     }
     pendingParams = params;
 
@@ -205,22 +265,37 @@ const runPreview = async () => {
             },
         }])[0];
 
+        const applicable = result.applicable !== false && result.rows.length > 0;
         const {html, js} = await Templates.renderForPromise('local_quickactions/preview_table', {
             intro: await getString('dialog_preview_intro', 'local_quickactions'),
             rows: result.rows,
             applyStr: await getString('dialog_apply', 'local_quickactions'),
             cancelStr: await getString('dialog_cancel', 'local_quickactions'),
+            applicable: applicable,
+            reason: applicable ? '' : (result.reason || ''),
         });
 
         const dialog = document.querySelector(SELECTORS.dialog);
         dialog.innerHTML = '';
         Templates.appendNodeContents(dialog, html, js);
     } catch (err) {
-        Notification.exception(err);
+        // Translate known plugin error codes into inline notifications instead of
+        // the full Moodle exception dialog with stack trace.
+        const code = err && (err.errorcode || err.debuginfo);
+        if (code === 'error_completion_needs_two'
+            || code === 'error_dateshift_zero'
+            || code === 'error_noselection'
+            || code === 'error_invalidsection'
+            || code === 'error_invalidcm') {
+            const msg = await getString(code, 'local_quickactions');
+            Notification.addNotification({message: msg, type: 'error'});
+        } else {
+            Notification.exception(err);
+        }
     }
 };
 
-const runExecute = async () => {
+const runExecute = async() => {
     const cmids = currentActionId === 'section_duplicate' ? [] : getSelectedCmids();
     const params = pendingParams || collectActionParams();
     if (currentActionId !== 'section_duplicate' && !params.sectionids) {
@@ -256,6 +331,8 @@ const runExecute = async () => {
                 sessionStorage.setItem('local_quickactions:lastundo', JSON.stringify({
                     undoid: result.undoid,
                     courseid: config.courseid,
+                    successcount: result.success,
+                    failcount: result.failed,
                     ts: Date.now(),
                 }));
             } catch (e) {

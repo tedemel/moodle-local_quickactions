@@ -8,11 +8,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Scheduled task: expire stale undo records.
@@ -24,12 +24,20 @@
 
 namespace local_quickactions\task;
 
+/**
+ * Class cleanup_undo.
+ */
 class cleanup_undo extends \core\task\scheduled_task {
-
+    /**
+     * get_name.
+     */
     public function get_name(): string {
         return get_string('task_cleanup_undo', 'local_quickactions');
     }
 
+    /**
+     * execute.
+     */
     public function execute() {
         \local_quickactions\local\undo_store::expire_old();
     }

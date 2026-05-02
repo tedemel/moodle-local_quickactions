@@ -8,11 +8,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Renderer for local_quickactions.
@@ -24,8 +24,16 @@
 
 namespace local_quickactions\output;
 
+/**
+ * Class renderer.
+ */
 class renderer extends \plugin_renderer_base {
-
+    /**
+     * render_fab_and_panel.
+     *
+     * @param int $courseid
+     * @return string
+     */
     public function render_fab_and_panel(int $courseid): string {
         $context = \context_course::instance($courseid);
         $actions = \local_quickactions\action\registry::get_metadata_for_context($context);

@@ -8,11 +8,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Unit tests for dateshift action.
@@ -25,10 +25,14 @@
 namespace local_quickactions\action;
 
 /**
+ * Tests for dateshift_test.
+ *
  * @covers \local_quickactions\action\dateshift
  */
 final class dateshift_test extends \advanced_testcase {
-
+    /**
+     * test_validate_rejects_no_target.
+     */
     public function test_validate_rejects_no_target(): void {
         $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course();
@@ -38,6 +42,9 @@ final class dateshift_test extends \advanced_testcase {
         dateshift::validate(['targetdate' => 0], [1], $course->id, $context);
     }
 
+    /**
+     * test_validate_rejects_no_selection.
+     */
     public function test_validate_rejects_no_selection(): void {
         $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course();
@@ -47,6 +54,9 @@ final class dateshift_test extends \advanced_testcase {
         dateshift::validate(['targetdate' => time() + DAYSECS], [], $course->id, $context);
     }
 
+    /**
+     * test_execute_aligns_earliest_date_to_target.
+     */
     public function test_execute_aligns_earliest_date_to_target(): void {
         global $DB;
         $this->resetAfterTest();
@@ -60,7 +70,7 @@ final class dateshift_test extends \advanced_testcase {
             'duedate' => $duedate,
         ]);
 
-        $target = strtotime('2026-06-08 12:00'); // +7 days.
+        $target = strtotime('2026-06-08 12:00'); // Plus 7 days.
         $result = dateshift::execute(
             ['targetdate' => $target],
             [$assign->cmid],
@@ -72,6 +82,9 @@ final class dateshift_test extends \advanced_testcase {
         $this->assertEquals($target, (int)$DB->get_field('assign', 'duedate', ['id' => $assign->id]));
     }
 
+    /**
+     * test_execute_preserves_relative_offsets.
+     */
     public function test_execute_preserves_relative_offsets(): void {
         global $DB;
         $this->resetAfterTest();
@@ -87,7 +100,7 @@ final class dateshift_test extends \advanced_testcase {
             'timeclose' => $timeclose,
         ]);
 
-        $target = strtotime('2026-07-01 09:00'); // earliest moves here.
+        $target = strtotime('2026-07-01 09:00'); // Earliest date moves here.
         dateshift::execute(
             ['targetdate' => $target],
             [$quiz->cmid],
@@ -101,6 +114,9 @@ final class dateshift_test extends \advanced_testcase {
         $this->assertEquals($newclose - $newopen, $timeclose - $timeopen);
     }
 
+    /**
+     * test_execute_with_section_expands_to_member_cmids.
+     */
     public function test_execute_with_section_expands_to_member_cmids(): void {
         global $DB;
         $this->resetAfterTest();

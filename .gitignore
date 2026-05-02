@@ -2,4 +2,3 @@
 __MACOSX/
 *.swp
 node_modules/
-amd/build/*.min.js.map

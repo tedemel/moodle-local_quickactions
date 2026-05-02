@@ -1,33 +1,64 @@
 {{!
     @template local_quickactions/preview_table
 
-    Context:
-    * intro - string
-    * rows - [{label, before, after}]
-    * applyStr, cancelStr - strings
+    Before/after preview rendered before applying any Quick Action.
+
+    @copyright 2026 Tessa Demel
+    @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+    Context variables required for this template:
+    * intro string Intro paragraph above the table.
+    * rows array List of rows ({label, before, after}).
+    * applyStr string Apply button label.
+    * cancelStr string Cancel button label.
+    * applicable bool Whether the action would change anything (false disables Apply).
+    * reason string Human-readable reason shown when applicable=false.
+
+    Example context (json):
+    {
+        "intro": "The following changes will be applied:",
+        "rows": [
+            {"label": "Quiz 1", "before": "visible", "after": "hidden"}
+        ],
+        "applyStr": "Apply",
+        "cancelStr": "Cancel",
+        "applicable": true,
+        "reason": ""
+    }
 }}
 <div class="local-quickactions-preview">
     <p class="local-quickactions-preview-intro">{{intro}}</p>
-    <table class="local-quickactions-preview-table table table-sm">
-        <thead>
-            <tr>
-                <th>{{#str}}name{{/str}}</th>
-                <th>{{#str}}before, moodle{{/str}}</th>
-                <th>{{#str}}after, moodle{{/str}}</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{#rows}}
+    {{^applicable}}
+        <div class="alert alert-warning local-quickactions-preview-reason" role="status">
+            <i class="fa fa-info-circle me-1" aria-hidden="true"></i>
+            {{reason}}
+        </div>
+    {{/applicable}}
+    {{#rows.length}}
+        <table class="local-quickactions-preview-table table table-sm">
+            <thead>
                 <tr>
-                    <td>{{label}}</td>
-                    <td><code>{{before}}</code></td>
-                    <td><code>{{after}}</code></td>
+                    <th>{{#str}}name{{/str}}</th>
+                    <th>{{#str}}before, moodle{{/str}}</th>
+                    <th>{{#str}}after, moodle{{/str}}</th>
                 </tr>
-            {{/rows}}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {{#rows}}
+                    <tr>
+                        <td>{{label}}</td>
+                        <td><code>{{before}}</code></td>
+                        <td><code>{{after}}</code></td>
+                    </tr>
+                {{/rows}}
+            </tbody>
+        </table>
+    {{/rows.length}}
     <div class="local-quickactions-preview-actions">
         <button type="button" class="btn btn-secondary" data-action="qa-cancel">{{cancelStr}}</button>
-        <button type="button" class="btn btn-primary" data-action="qa-apply">{{applyStr}}</button>
+        <button type="button"
+                class="btn btn-primary{{^applicable}} disabled{{/applicable}}"
+                data-action="qa-apply"
+                {{^applicable}}disabled aria-disabled="true"{{/applicable}}>{{applyStr}}</button>
     </div>
 </div>

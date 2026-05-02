@@ -1,7 +1,21 @@
 {{!
     @template local_quickactions/dialog_section_duplicate
-    Context:
-    * sections - [{id, name}]
+
+    Section-duplicate action dialog.
+
+    @copyright 2026 Tessa Demel
+    @license   https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+    Context variables required for this template:
+    * sections array List of {id, name} sections in the current course.
+
+    Example context (json):
+    {
+        "sections": [
+            {"id": 11, "name": "General"},
+            {"id": 12, "name": "Topic 1"}
+        ]
+    }
 }}
 <div class="local-quickactions-dialog">
     <h4 class="h6">{{#str}}action_section_duplicate, local_quickactions{{/str}}</h4>

@@ -8,11 +8,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Move Quick Action.
@@ -24,31 +24,57 @@
 
 namespace local_quickactions\action;
 
+/**
+ * Class move.
+ */
 class move implements action_interface {
-
+    /**
+     * get_id.
+     */
     public static function get_id(): string {
         return 'move';
     }
 
+    /**
+     * get_name.
+     */
     public static function get_name(): string {
         return get_string('action_move', 'local_quickactions');
     }
 
+    /**
+     * get_description.
+     */
     public static function get_description(): string {
         return get_string('action_move_desc', 'local_quickactions');
     }
 
+    /**
+     * get_icon.
+     */
     public static function get_icon(): string {
         return 'arrow-right';
     }
 
+    /**
+     * get_required_capability.
+     */
     public static function get_required_capability(): string {
         return 'local/quickactions:bulkupdate';
     }
 
+    /**
+     * validate.
+     *
+     * @param array $params
+     * @param array $cmids
+     * @param int $courseid
+     * @param \context_course $context
+     */
     public static function validate(array $params, array $cmids, int $courseid, \context_course $context): void {
         global $DB;
-        if (empty($cmids)) {
+        $sectionids = $params['sectionids'] ?? [];
+        if (empty($cmids) && empty($sectionids)) {
             throw new \moodle_exception('error_noselection', 'local_quickactions');
         }
         $targetsectionid = (int)($params['targetsectionid'] ?? 0);
@@ -60,8 +86,18 @@ class move implements action_interface {
         }
     }
 
+    /**
+     * preview.
+     *
+     * @param array $params
+     * @param array $cmids
+     * @param int $courseid
+     * @param \context_course $context
+     * @return array
+     */
     public static function preview(array $params, array $cmids, int $courseid, \context_course $context): array {
         global $DB;
+        $cmids = \local_quickactions\action\dateshift::expand_with_sections($cmids, $params['sectionids'] ?? [], $courseid);
         $targetsectionid = (int)$params['targetsectionid'];
         $targetsection = $DB->get_record('course_sections', ['id' => $targetsectionid]);
         $targetname = $targetsection
@@ -70,26 +106,47 @@ class move implements action_interface {
 
         $modinfo = get_fast_modinfo($courseid);
         $rows = [];
+        $changed = 0;
         foreach ($cmids as $cmid) {
             $cm = $modinfo->cms[$cmid] ?? null;
             if (!$cm) {
                 continue;
             }
             $currentsection = $modinfo->get_section_info($cm->sectionnum);
+            $alreadythere = $currentsection && (int)$currentsection->id === $targetsectionid;
+            if (!$alreadythere) {
+                $changed++;
+            }
             $rows[] = [
                 'cmid' => $cmid,
                 'label' => format_string($cm->name),
-                'before' => $currentsection ? format_string($currentsection->name ?: get_string('section') . ' ' . $cm->sectionnum) : '?',
+                'before' => $currentsection
+                    ? format_string($currentsection->name ?: get_string('section') . ' ' . $cm->sectionnum)
+                    : '?',
                 'after' => format_string($targetname),
             ];
         }
-        return $rows;
+        return [
+            'rows' => $rows,
+            'applicable' => $changed > 0,
+            'reason' => $changed > 0 ? '' : get_string('reason_move_already_there', 'local_quickactions'),
+        ];
     }
 
+    /**
+     * execute.
+     *
+     * @param array $params
+     * @param array $cmids
+     * @param int $courseid
+     * @param \context_course $context
+     * @return array
+     */
     public static function execute(array $params, array $cmids, int $courseid, \context_course $context): array {
         global $CFG, $DB, $USER;
         require_once($CFG->dirroot . '/course/lib.php');
 
+        $cmids = \local_quickactions\action\dateshift::expand_with_sections($cmids, $params['sectionids'] ?? [], $courseid);
         $targetsectionid = (int)$params['targetsectionid'];
         $modinfo = get_fast_modinfo($courseid);
 
@@ -135,7 +192,10 @@ class move implements action_interface {
         $undoid = 0;
         if ($success > 0 && !empty($snapshot['records'])) {
             $undoid = \local_quickactions\local\undo_store::record(
-                (int)$USER->id, $courseid, self::get_id(), $snapshot
+                (int)$USER->id,
+                $courseid,
+                self::get_id(),
+                $snapshot
             );
         }
 

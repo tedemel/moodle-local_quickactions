@@ -8,11 +8,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Unit tests for move action.
@@ -25,10 +25,14 @@
 namespace local_quickactions\action;
 
 /**
+ * Tests for move_test.
+ *
  * @covers \local_quickactions\action\move
  */
 final class move_test extends \advanced_testcase {
-
+    /**
+     * test_execute_moves_module.
+     */
     public function test_execute_moves_module(): void {
         global $DB;
         $this->resetAfterTest();
@@ -56,6 +60,9 @@ final class move_test extends \advanced_testcase {
         $this->assertEquals(3, $modinfo->cms[$assign->cmid]->sectionnum);
     }
 
+    /**
+     * test_validate_rejects_invalid_section.
+     */
     public function test_validate_rejects_invalid_section(): void {
         $this->resetAfterTest();
         $course = $this->getDataGenerator()->create_course();

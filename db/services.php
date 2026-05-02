@@ -8,11 +8,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Web service definitions for local_quickactions.
@@ -42,7 +42,7 @@ $functions = [
     ],
 
     'local_quickactions_execute' => [
-        'classname'     => 'local_quickactions\external\execute',
+        'classname'     => 'local_quickactions\external\apply',
         'description'   => 'Execute a Quick Action on selected course module ids.',
         'type'          => 'write',
         'ajax'          => true,

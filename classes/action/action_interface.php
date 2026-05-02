@@ -8,11 +8,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Common interface for Quick Actions.
@@ -24,21 +24,66 @@
 
 namespace local_quickactions\action;
 
+/**
+ * Interface action_interface.
+ */
 interface action_interface {
-
+    /**
+     * get_id.
+     */
     public static function get_id(): string;
 
+    /**
+     * get_name.
+     */
     public static function get_name(): string;
 
+    /**
+     * get_description.
+     */
     public static function get_description(): string;
 
+    /**
+     * get_icon.
+     */
     public static function get_icon(): string;
 
+    /**
+     * get_required_capability.
+     */
     public static function get_required_capability(): string;
 
+    /**
+     * validate.
+     *
+     * @param array $params
+     * @param array $cmids
+     * @param int $courseid
+     * @param \context_course $context
+     */
     public static function validate(array $params, array $cmids, int $courseid, \context_course $context): void;
 
+    /**
+     * Build a preview of what the action would do.
+     * Returns a flat list of rows OR an array with keys
+     * 'rows', 'applicable' (bool), 'reason' (string).
+     *
+     * @param array $params
+     * @param array $cmids
+     * @param int $courseid
+     * @param \context_course $context
+     * @return array
+     */
     public static function preview(array $params, array $cmids, int $courseid, \context_course $context): array;
 
+    /**
+     * execute.
+     *
+     * @param array $params
+     * @param array $cmids
+     * @param int $courseid
+     * @param \context_course $context
+     * @return array
+     */
     public static function execute(array $params, array $cmids, int $courseid, \context_course $context): array;
 }

@@ -8,11 +8,11 @@
 //
 // Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle. If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
  * Registry for Quick Actions.
@@ -24,9 +24,13 @@
 
 namespace local_quickactions\action;
 
+/**
+ * Class registry.
+ */
 class registry {
-
     /**
+     * Return all registered action classes keyed by their action id.
+     *
      * @return array<string, class-string<action_interface>>
      */
     public static function get_all(): array {
@@ -36,10 +40,13 @@ class registry {
             section_duplicate::get_id()    => section_duplicate::class,
             move::get_id()                 => move::class,
             completion_template::get_id()  => completion_template::class,
+            availability_template::get_id() => availability_template::class,
         ];
     }
 
     /**
+     * Resolve an action id to its class name, or null when unknown.
+     *
      * @param string $id
      * @return class-string<action_interface>|null
      */
@@ -48,10 +55,15 @@ class registry {
         return $all[$id] ?? null;
     }
 
+    /**
+     * get_metadata_for_context.
+     *
+     * @param \context_course $context
+     * @return array
+     */
     public static function get_metadata_for_context(\context_course $context): array {
         $items = [];
         foreach (self::get_all() as $id => $cls) {
-            /** @var class-string<action_interface> $cls */
             $cap = $cls::get_required_capability();
             if (!has_capability($cap, $context)) {
                 continue;
