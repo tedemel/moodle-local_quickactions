@@ -19,8 +19,8 @@ und vier produktivitätssteigernden Aktionen.
 
 ## Anforderungen
 
-- Moodle 5.0 oder neuer (getestet auf 5.2)
-- PHP 8.2 oder neuer
+- Moodle 5.0, 5.1 oder 5.2
+- PHP 8.3 oder neuer (PHP 8.4 unterstützt)
 - Boost- oder Boost-Union-Theme (FAB rendert via `before_standard_top_of_body_html_generation`)
 - Kurs-Bearbeitungsmodus muss aktiv sein
 - User braucht `local/quickactions:use` (default: editingteacher, manager)
@@ -82,3 +82,7 @@ GPL v3 oder höher — wie Moodle.
 ## Repository
 
 https://github.com/tedemel/moodle-local_quickactions
+
+## Changelog
+
+Siehe [CHANGELOG.md](CHANGELOG.md).
