@@ -5,6 +5,18 @@ All notable changes to `local_quickactions` are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] — 2026-07-08
+
+### Fixed
+- Security: `completion_template` and `availability_template` wrote to
+  `course_modules` rows without verifying the ids belong to the target course,
+  allowing cross-course modification via the web service.
+  `expand_with_sections()` now filters both section ids and the merged cmid
+  list against the course, and both template actions reject a template cmid
+  from another course.
+- Section ids from foreign courses could collide with local section numbers
+  during section expansion and silently select unrelated activities.
+
 ## [1.0.0] — 2026-05-19
 
 ### Changed

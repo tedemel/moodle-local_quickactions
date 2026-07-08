@@ -306,24 +306,39 @@ class dateshift implements action_interface {
     /**
      * Expand selected sections into their child cmids, merge with explicit cmids.
      *
+     * Both inputs come from the client, so the result is restricted to this
+     * course: section ids of other courses are ignored and the merged cmid
+     * list is filtered against the course's modinfo. All actions rely on this
+     * as the guard against cross-course module ids.
+     *
      * @param array $cmids
      * @param array $sectionids
      * @param int $courseid
      * @return array
      */
     public static function expand_with_sections(array $cmids, array $sectionids, int $courseid): array {
-        if (empty($sectionids)) {
-            return array_values(array_unique(array_map('intval', $cmids)));
-        }
         global $DB;
         $modinfo = get_fast_modinfo($courseid);
         $set = array_flip(array_map('intval', $cmids));
-        $sections = $DB->get_records_list('course_sections', 'id', $sectionids, '', 'id, section');
-        foreach ($sections as $s) {
-            foreach (($modinfo->sections[$s->section] ?? []) as $cmid) {
-                $set[(int)$cmid] = true;
+        if (!empty($sectionids)) {
+            [$insql, $params] = $DB->get_in_or_equal(array_map('intval', $sectionids), SQL_PARAMS_NAMED);
+            $params['course'] = $courseid;
+            $sections = $DB->get_records_select(
+                'course_sections',
+                "id $insql AND course = :course",
+                $params,
+                '',
+                'id, section'
+            );
+            foreach ($sections as $s) {
+                foreach (($modinfo->sections[$s->section] ?? []) as $cmid) {
+                    $set[(int)$cmid] = true;
+                }
             }
         }
-        return array_keys($set);
+        return array_values(array_filter(
+            array_keys($set),
+            static fn(int $cmid): bool => isset($modinfo->cms[$cmid])
+        ));
     }
 }

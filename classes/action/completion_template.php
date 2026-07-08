@@ -179,6 +179,11 @@ class completion_template implements action_interface {
             $courseid
         );
         $templatecmid = (int)$params['templatecmid'];
+        // The template must be a module of this course (expand_with_sections
+        // already restricted $cmids to the course).
+        if (!in_array($templatecmid, $cmids, true)) {
+            throw new \moodle_exception('error_invalidcm', 'local_quickactions');
+        }
         $tplrec = $DB->get_record('course_modules', ['id' => $templatecmid], 'id, ' . implode(', ', self::COMPLETION_FIELDS));
         if (!$tplrec) {
             return [

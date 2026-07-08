@@ -159,6 +159,11 @@ class availability_template implements action_interface {
             $courseid
         );
         $templatecmid = (int)$params['templatecmid'];
+        // The template must be a module of this course (expand_with_sections
+        // already restricted $cmids to the course).
+        if (!in_array($templatecmid, $cmids, true)) {
+            throw new \moodle_exception('error_invalidcm', 'local_quickactions');
+        }
         $tplavailability = $DB->get_field('course_modules', 'availability', ['id' => $templatecmid]);
 
         // Snapshot for undo (skip template — it is unchanged).
